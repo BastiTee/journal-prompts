@@ -1,0 +1,23 @@
+{
+  "name": "journal-prompts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/marked": "^5.0.2",
+    "@types/node": "^20.10.5",
+    "js-yaml": "^4.1.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "marked": "^16.4.0"
+  }
+}
