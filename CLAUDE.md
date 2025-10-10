@@ -20,6 +20,12 @@ npm run preview
 
 # Run TypeScript type checking without emitting files
 npm run type-check
+
+# Run ESLint to check code quality and style
+npm run lint
+
+# Run ESLint with automatic fixes
+npm run lint:fix
 ```
 
 ## Architecture Overview
@@ -99,12 +105,24 @@ public/
 ## Development Notes
 
 - **No testing framework** currently configured
-- **No linting** setup present
+- **ESLint configured** with TypeScript support and comprehensive rules for code quality and consistency
 - **TypeScript strict mode** enabled with comprehensive type checking
 - **Vite configuration** includes custom base path for GitHub Pages deployment
 - **All styling** contained in single CSS file with analog-inspired design theme
 - **Static assets** served from public/ directory
 - **Production builds** output to dist/ directory
+
+## Code Quality
+
+The project uses ESLint with TypeScript support to maintain code quality and consistency:
+
+- **ESLint v9** with flat configuration format
+- **TypeScript ESLint** rules for type-aware linting
+- **Code style enforcement** including indentation, quotes, semicolons, and spacing
+- **Best practices** rules for avoiding common JavaScript/TypeScript pitfalls
+- **Automatic fixes** available for many style and formatting issues
+
+Run `npm run lint` before committing changes to ensure code quality standards are met.
 
 ## Data Management
 

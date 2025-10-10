@@ -30,7 +30,7 @@ class JournalPromptsApp {
     this.newPromptBtnEl = document.getElementById('new-prompt-btn')!;
     this.copyLinkBtnEl = document.getElementById('copy-link-btn')!;
 
-    this.init();
+    void this.init();
   }
 
   private async init(): Promise<void> {
@@ -39,6 +39,7 @@ class JournalPromptsApp {
       this.setupEventListeners();
       this.handleDeepLink();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to initialize app:', error);
       this.showError('Failed to load journal prompts. Please refresh the page.');
     }
@@ -51,10 +52,10 @@ class JournalPromptsApp {
 
   private populateDropdown(): void {
     const categories = Object.keys(this.categoryGroups);
-    
+
     // Clear existing options except the first one
     this.categoryDropdownEl.innerHTML = '<option value="">Select a category...</option>';
-    
+
     categories.forEach(category => {
       const option = document.createElement('option');
       option.value = category;
@@ -74,14 +75,14 @@ class JournalPromptsApp {
     if (this.currentCategory) {
       const prompts = this.categoryGroups[this.currentCategory];
       let newPrompt = getRandomPrompt(prompts);
-      
+
       // Ensure we don't show the same prompt twice in a row if there are multiple prompts
       if (prompts.length > 1 && this.currentPrompt) {
         while (newPrompt.prompt === this.currentPrompt.prompt) {
           newPrompt = getRandomPrompt(prompts);
         }
       }
-      
+
       this.displayPrompt(newPrompt);
     }
   }
@@ -99,7 +100,7 @@ class JournalPromptsApp {
 
     this.categorySelectionEl.classList.add('hidden');
     this.promptDisplayEl.classList.remove('hidden');
-    
+
     this.updateUrl(prompt);
   }
 
@@ -114,12 +115,12 @@ class JournalPromptsApp {
     this.togglePurposeBtnEl.addEventListener('click', () => this.togglePurpose());
     this.restartBtnEl.addEventListener('click', () => this.showCategorySelection());
     this.newPromptBtnEl.addEventListener('click', () => this.selectNewPromptFromSameCategory());
-    this.copyLinkBtnEl.addEventListener('click', () => this.copyCurrentLink());
+    this.copyLinkBtnEl.addEventListener('click', () => void this.copyCurrentLink());
   }
 
   private togglePurpose(): void {
     this.purposeVisible = !this.purposeVisible;
-    
+
     if (this.purposeVisible) {
       this.promptPurposeEl.classList.remove('hidden');
       this.togglePurposeBtnEl.title = 'Hide the purpose of this exercise';
@@ -135,7 +136,7 @@ class JournalPromptsApp {
     this.categoryDropdownEl.value = '';
     this.currentCategory = '';
     this.currentPrompt = null;
-    
+
     // Clear URL parameters
     window.history.pushState({}, '', window.location.pathname);
   }
@@ -143,7 +144,7 @@ class JournalPromptsApp {
   private updateUrl(prompt: Prompt): void {
     const params = new URLSearchParams();
     params.set('id', prompt.id.toString());
-    
+
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
   }
@@ -152,7 +153,7 @@ class JournalPromptsApp {
     const params = new URLSearchParams(window.location.search);
     const promptId = params.get('id');
     const category = params.get('category');
-    
+
     // Try new ID-based system first
     if (promptId) {
       const numericId = parseInt(promptId, 10);
@@ -165,21 +166,21 @@ class JournalPromptsApp {
         }
       }
     }
-    
+
     // Fallback to old system for backwards compatibility
     const promptPrefix = params.get('prompt');
     if (category && this.categoryGroups[category] && promptPrefix) {
       const decodedPrefix = decodeURIComponent(promptPrefix);
       const prompts = this.categoryGroups[category];
       const matchingPrompt = prompts.find(p => p.prompt.startsWith(decodedPrefix));
-      
+
       if (matchingPrompt) {
         this.currentCategory = category;
         this.displayPrompt(matchingPrompt);
         return;
       }
     }
-    
+
     // Category-only fallback
     if (category && this.categoryGroups[category]) {
       this.selectCategory(category);
@@ -189,17 +190,18 @@ class JournalPromptsApp {
   private async copyCurrentLink(): Promise<void> {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      
+
       // Show temporary feedback with visual change
       const originalTitle = this.copyLinkBtnEl.title;
       this.copyLinkBtnEl.title = 'Copied!';
       this.copyLinkBtnEl.classList.add('copied');
-      
+
       setTimeout(() => {
         this.copyLinkBtnEl.title = originalTitle;
         this.copyLinkBtnEl.classList.remove('copied');
       }, 2000);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to copy link:', error);
       // Fallback for browsers that don't support clipboard API
       this.fallbackCopyLink();
@@ -212,7 +214,7 @@ class JournalPromptsApp {
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
       document.execCommand('copy');
       const originalTitle = this.copyLinkBtnEl.title;
@@ -223,9 +225,10 @@ class JournalPromptsApp {
         this.copyLinkBtnEl.classList.remove('copied');
       }, 2000);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Fallback copy failed:', error);
     }
-    
+
     document.body.removeChild(textArea);
   }
 

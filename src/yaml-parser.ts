@@ -5,7 +5,7 @@ import { Prompt, CategoryGroup } from './types.ts';
 // Configure marked for safe HTML rendering
 marked.setOptions({
   breaks: true,
-  gfm: true
+  gfm: true,
 });
 
 export async function loadPrompts(): Promise<CategoryGroup> {
@@ -14,20 +14,20 @@ export async function loadPrompts(): Promise<CategoryGroup> {
     if (!response.ok) {
       throw new Error(`Failed to fetch prompts: ${response.statusText}`);
     }
-    
+
     const yamlText = await response.text();
     const documents = yamlText.split('---').filter(doc => doc.trim());
-    
+
     const prompts: Prompt[] = documents.map(doc => {
       const parsed = yaml.load(doc.trim()) as Prompt;
       return {
         id: parsed.id,
         category: parsed.category,
         prompt: parsed.prompt.trim(),
-        purpose: parsed.purpose.trim()
+        purpose: parsed.purpose.trim(),
       };
     });
-    
+
     // Group prompts by category
     const grouped: CategoryGroup = {};
     prompts.forEach(prompt => {
@@ -36,9 +36,10 @@ export async function loadPrompts(): Promise<CategoryGroup> {
       }
       grouped[prompt.category].push(prompt);
     });
-    
+
     return grouped;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error loading prompts:', error);
     throw error;
   }
