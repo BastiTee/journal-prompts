@@ -1,11 +1,51 @@
 import { loadPrompts, getRandomPrompt, parseMarkdown, findPromptById } from './yaml-parser.ts';
 import { CategoryGroup, Prompt } from './types.ts';
+import { TranslationManager } from './translations.ts';
 import './styles.css';
+
+class LanguageManager {
+  private static readonly STORAGE_KEY = 'journal-prompts-language';
+  private static readonly DEFAULT_LANGUAGE = 'EN';
+  private static readonly AVAILABLE_LANGUAGES = ['EN', 'DE'];
+
+  static getCurrentLanguage(): string {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (stored && this.AVAILABLE_LANGUAGES.includes(stored)) {
+        return stored;
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to read language from localStorage:', error);
+    }
+    return this.DEFAULT_LANGUAGE;
+  }
+
+  static setLanguage(language: string): void {
+    if (!this.AVAILABLE_LANGUAGES.includes(language)) {
+      throw new Error(`Unsupported language: ${language}`);
+    }
+    
+    try {
+      localStorage.setItem(this.STORAGE_KEY, language);
+      // Update HTML lang attribute for accessibility
+      document.documentElement.lang = language.toLowerCase();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to save language to localStorage:', error);
+    }
+  }
+
+  static getAvailableLanguages(): string[] {
+    return [...this.AVAILABLE_LANGUAGES];
+  }
+}
 
 class JournalPromptsApp {
   private categoryGroups: CategoryGroup = {};
   private currentCategory: string = '';
   private currentPrompt: Prompt | null = null;
+  private currentLanguage: string = '';
   private categorySelectionEl: HTMLElement;
   private promptDisplayEl: HTMLElement;
   private categoryDropdownEl: HTMLSelectElement;
@@ -16,6 +56,7 @@ class JournalPromptsApp {
   private restartBtnEl: HTMLElement;
   private newPromptBtnEl: HTMLElement;
   private copyLinkBtnEl: HTMLElement;
+  private languageSwitcherEl: HTMLElement;
   private purposeVisible: boolean = false;
 
   constructor() {
@@ -29,32 +70,97 @@ class JournalPromptsApp {
     this.restartBtnEl = document.getElementById('restart-btn')!;
     this.newPromptBtnEl = document.getElementById('new-prompt-btn')!;
     this.copyLinkBtnEl = document.getElementById('copy-link-btn')!;
+    this.languageSwitcherEl = document.getElementById('language-switcher')!;
 
     void this.init();
   }
 
   private async init(): Promise<void> {
     try {
+      this.initializeLanguage();
+      await this.initializeTranslations();
       await this.loadAndDisplayCategories();
+      this.updateUIText();
       this.setupEventListeners();
+      this.setupLanguageSwitcher();
       this.handleDeepLink();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to initialize app:', error);
-      this.showError('Failed to load journal prompts. Please refresh the page.');
+      this.showError(TranslationManager.get('messages.loadError'));
+    }
+  }
+
+  private initializeLanguage(): void {
+    this.currentLanguage = LanguageManager.getCurrentLanguage();
+    document.documentElement.lang = this.currentLanguage.toLowerCase();
+  }
+
+  private async initializeTranslations(): Promise<void> {
+    await TranslationManager.initialize(this.currentLanguage);
+  }
+
+  private updateUIText(): void {
+    // Update page title
+    document.title = TranslationManager.get('page.title');
+
+    // Update category selection label
+    const categoryLabel = document.querySelector('.category-label') as HTMLElement;
+    if (categoryLabel) {
+      categoryLabel.textContent = TranslationManager.get('categorySelection.label');
+    }
+
+    // Update dropdown placeholder
+    this.updateDropdownPlaceholder();
+
+    // Update button tooltips
+    this.updateButtonTooltips();
+
+    // Update language switcher tooltips
+    this.updateLanguageSwitcherTooltips();
+  }
+
+  private updateDropdownPlaceholder(): void {
+    const placeholderOption = this.categoryDropdownEl.querySelector('option[value=""]') as HTMLOptionElement;
+    if (placeholderOption) {
+      placeholderOption.textContent = TranslationManager.get('categorySelection.placeholder');
+    }
+  }
+
+  private updateButtonTooltips(): void {
+    // Update purpose toggle button tooltip based on current state
+    this.togglePurposeBtnEl.title = this.purposeVisible 
+      ? TranslationManager.get('buttons.hidePurpose')
+      : TranslationManager.get('buttons.showPurpose');
+
+    // Update other button tooltips
+    this.newPromptBtnEl.title = TranslationManager.get('buttons.newPrompt');
+    this.copyLinkBtnEl.title = TranslationManager.get('buttons.copyLink');
+    this.restartBtnEl.title = TranslationManager.get('buttons.goBack');
+  }
+
+  private updateLanguageSwitcherTooltips(): void {
+    const enButton = document.getElementById('lang-en') as HTMLElement;
+    const deButton = document.getElementById('lang-de') as HTMLElement;
+    
+    if (enButton) {
+      enButton.title = TranslationManager.get('buttons.switchToEnglish');
+    }
+    if (deButton) {
+      deButton.title = TranslationManager.get('buttons.switchToGerman');
     }
   }
 
   private async loadAndDisplayCategories(): Promise<void> {
-    this.categoryGroups = await loadPrompts();
+    this.categoryGroups = await loadPrompts(this.currentLanguage);
     this.populateDropdown();
   }
 
   private populateDropdown(): void {
     const categories = Object.keys(this.categoryGroups);
 
-    // Clear existing options except the first one
-    this.categoryDropdownEl.innerHTML = '<option value="">Select a category...</option>';
+    // Clear existing options and add translated placeholder
+    this.categoryDropdownEl.innerHTML = `<option value="">${TranslationManager.get('categorySelection.placeholder')}</option>`;
 
     categories.forEach(category => {
       const option = document.createElement('option');
@@ -96,7 +202,7 @@ class JournalPromptsApp {
     // Reset purpose visibility
     this.purposeVisible = false;
     this.promptPurposeEl.classList.add('hidden');
-    this.togglePurposeBtnEl.title = 'Show the purpose of this exercise';
+    this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
 
     this.categorySelectionEl.classList.add('hidden');
     this.promptDisplayEl.classList.remove('hidden');
@@ -123,10 +229,10 @@ class JournalPromptsApp {
 
     if (this.purposeVisible) {
       this.promptPurposeEl.classList.remove('hidden');
-      this.togglePurposeBtnEl.title = 'Hide the purpose of this exercise';
+      this.togglePurposeBtnEl.title = TranslationManager.get('buttons.hidePurpose');
     } else {
       this.promptPurposeEl.classList.add('hidden');
-      this.togglePurposeBtnEl.title = 'Show the purpose of this exercise';
+      this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
     }
   }
 
@@ -193,7 +299,7 @@ class JournalPromptsApp {
 
       // Show temporary feedback with visual change
       const originalTitle = this.copyLinkBtnEl.title;
-      this.copyLinkBtnEl.title = 'Copied!';
+      this.copyLinkBtnEl.title = TranslationManager.get('messages.copied');
       this.copyLinkBtnEl.classList.add('copied');
 
       setTimeout(() => {
@@ -218,7 +324,7 @@ class JournalPromptsApp {
     try {
       document.execCommand('copy');
       const originalTitle = this.copyLinkBtnEl.title;
-      this.copyLinkBtnEl.title = 'Copied!';
+      this.copyLinkBtnEl.title = TranslationManager.get('messages.copied');
       this.copyLinkBtnEl.classList.add('copied');
       setTimeout(() => {
         this.copyLinkBtnEl.title = originalTitle;
@@ -232,10 +338,89 @@ class JournalPromptsApp {
     document.body.removeChild(textArea);
   }
 
+  private setupLanguageSwitcher(): void {
+    // Initialize language button states
+    this.updateLanguageButtons();
+
+    // Add event listeners for language buttons
+    const langButtons = this.languageSwitcherEl.querySelectorAll('.lang-btn');
+    langButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const target = e.target as HTMLButtonElement;
+        const language = target.dataset.lang;
+        if (language && language !== this.currentLanguage) {
+          void this.switchLanguage(language);
+        }
+      });
+    });
+  }
+
+  private updateLanguageButtons(): void {
+    const langButtons = this.languageSwitcherEl.querySelectorAll('.lang-btn');
+    langButtons.forEach(button => {
+      const btnElement = button as HTMLButtonElement;
+      const language = btnElement.dataset.lang;
+      if (language === this.currentLanguage) {
+        btnElement.classList.add('active');
+      } else {
+        btnElement.classList.remove('active');
+      }
+    });
+  }
+
+  private async switchLanguage(newLanguage: string): Promise<void> {
+    try {
+      // Save language preference
+      LanguageManager.setLanguage(newLanguage);
+      this.currentLanguage = newLanguage;
+
+      // Store current state
+      const wasOnPromptScreen = !this.promptDisplayEl.classList.contains('hidden');
+      const currentPromptId = this.currentPrompt?.id;
+      const wasShowingPurpose = this.purposeVisible;
+
+      // Initialize translations for the new language
+      await TranslationManager.initialize(newLanguage);
+      TranslationManager.setLanguage(newLanguage);
+
+      // Reload prompts with new language
+      await this.loadAndDisplayCategories();
+
+      // Update all UI text with new translations
+      this.updateUIText();
+
+      // Update language button states
+      this.updateLanguageButtons();
+
+      // Restore state if we were viewing a prompt
+      if (wasOnPromptScreen && currentPromptId) {
+        const prompt = findPromptById(this.categoryGroups, currentPromptId);
+        if (prompt) {
+          this.currentCategory = prompt.category;
+          this.displayPrompt(prompt);
+          
+          // Restore purpose visibility
+          if (wasShowingPurpose) {
+            this.togglePurpose();
+          }
+        } else {
+          // Prompt not found in new language, go back to category selection
+          this.showCategorySelection();
+        }
+      }
+
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to switch language:', error);
+      // Fallback: reload the page
+      window.location.reload();
+    }
+  }
+
   private showError(message: string): void {
     document.body.innerHTML = `
       <div class="error">
-        <h1>Error</h1>
+        <h1>${TranslationManager.get('messages.errorTitle')}</h1>
         <p>${message}</p>
       </div>
     `;

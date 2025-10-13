@@ -1,0 +1,23 @@
+{
+  "page": {
+    "title": "Journal Prompts"
+  },
+  "categorySelection": {
+    "label": "Choose a Category",
+    "placeholder": "Select a category..."
+  },
+  "buttons": {
+    "showPurpose": "Show the purpose of this exercise",
+    "hidePurpose": "Hide the purpose of this exercise",
+    "newPrompt": "Get a new prompt from this category",
+    "copyLink": "Copy link to this prompt",
+    "goBack": "Go back to category selection",
+    "switchToEnglish": "Switch to English",
+    "switchToGerman": "Switch to German"
+  },
+  "messages": {
+    "loadError": "Failed to load journal prompts. Please refresh the page.",
+    "errorTitle": "Error",
+    "copied": "Copied!"
+  }
+}

@@ -8,9 +8,9 @@ marked.setOptions({
   gfm: true,
 });
 
-export async function loadPrompts(): Promise<CategoryGroup> {
+export async function loadPrompts(language: string = 'EN'): Promise<CategoryGroup> {
   try {
-    const response = await fetch('/journal-prompts/prompts_EN.yaml');
+    const response = await fetch(`/journal-prompts/prompts_${language}.yaml`);
     if (!response.ok) {
       throw new Error(`Failed to fetch prompts: ${response.statusText}`);
     }
@@ -51,7 +51,7 @@ export function getRandomPrompt(prompts: Prompt[]): Prompt {
 }
 
 export function parseMarkdown(text: string): string {
-  return marked(text);
+  return marked(text) as string;
 }
 
 export function findPromptById(categoryGroups: CategoryGroup, id: number): Prompt | null {

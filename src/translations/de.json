@@ -1,0 +1,23 @@
+{
+  "page": {
+    "title": "Journal-Fragen"
+  },
+  "categorySelection": {
+    "label": "Kategorie wählen",
+    "placeholder": "Kategorie auswählen..."
+  },
+  "buttons": {
+    "showPurpose": "Zweck dieser Übung anzeigen",
+    "hidePurpose": "Zweck dieser Übung verbergen",
+    "newPrompt": "Neuen Fragen aus dieser Kategorie erhalten",
+    "copyLink": "Link zu dieser Frage kopieren",
+    "goBack": "Zurück zur Kategorieauswahl",
+    "switchToEnglish": "Zu Englisch wechseln",
+    "switchToGerman": "Zu Deutsch wechseln"
+  },
+  "messages": {
+    "loadError": "Fehler beim Laden der Journal-Fragen. Bitte Seite neu laden.",
+    "errorTitle": "Fehler",
+    "copied": "Kopiert!"
+  }
+}
