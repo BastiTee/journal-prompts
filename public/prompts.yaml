@@ -20,6 +20,20 @@ prompt: |
 purpose: |
   Explore the long-term emotional impact of formative experiences.
 ---
+id: B4
+category: Biography
+prompt: |
+  If you had one minute to describe yourself to a stranger, what would you say?
+purpose: |
+  Explore how you think about yourself. Make a personal snapshot.
+---
+id: B5
+category: Biography
+prompt: |
+  Write the last dream you remember (even if fuzzy).
+purpose: |
+  Relive your own memories.
+---
 id: CA1
 category: Changing Inner Attitude
 prompt: |
@@ -94,6 +108,20 @@ prompt: |
   5-10 bullet points.
 purpose: |
   Focus on the present instead of the past or future.
+---
+id: CM5
+category: Changing Mood
+prompt: |
+  Name three colors you see right now.
+purpose: |
+  Switch to a creative, relaxed mode.
+---
+id: CM6
+category: Changing Mood
+prompt: |
+  Name a book that changed you, but describe it in one sentence.
+purpose: |
+  Switch to a creative, relaxed mode.
 ---
 id: DR1
 category: Daily Reflection
