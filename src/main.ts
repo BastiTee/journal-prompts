@@ -262,6 +262,12 @@ class JournalPromptsApp {
     this.categorySelectionEl.classList.add('hidden');
     this.promptDisplayEl.classList.remove('hidden');
 
+    // Hide controls when prompt is displayed
+    const controlsContainer = document.querySelector('.controls-container');
+    if (controlsContainer) {
+      controlsContainer.classList.add('hidden-on-prompt');
+    }
+
     this.updateUrl(prompt);
   }
 
@@ -297,6 +303,12 @@ class JournalPromptsApp {
     this.categoryDropdownEl.value = '';
     this.currentCategory = '';
     this.currentPrompt = null;
+
+    // Show controls when returning to category selection
+    const controlsContainer = document.querySelector('.controls-container');
+    if (controlsContainer) {
+      controlsContainer.classList.remove('hidden-on-prompt');
+    }
 
     // Clear URL parameters
     window.history.pushState({}, '', window.location.pathname);

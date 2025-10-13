@@ -378,8 +378,13 @@ main {
 }
 
 /* Hide controls when prompt is displayed */
-#prompt-display:not(.hidden) ~ .controls-container {
-  display: none;
+#prompt-display:not(.hidden) {
+  /* This will be handled by JavaScript instead of CSS selector */
+}
+
+/* Class to hide controls via JavaScript */
+.controls-container.hidden-on-prompt {
+  display: none !important;
 }
 
 /* Shared switcher styles */
