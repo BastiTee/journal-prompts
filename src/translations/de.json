@@ -13,7 +13,9 @@
     "copyLink": "Link zu dieser Frage kopieren",
     "goBack": "Zurück zur Kategorieauswahl",
     "switchToEnglish": "Zu Englisch wechseln",
-    "switchToGerman": "Zu Deutsch wechseln"
+    "switchToGerman": "Zu Deutsch wechseln",
+    "switchToLight": "Zu hellem Modus wechseln",
+    "switchToDark": "Zu dunklem Modus wechseln"
   },
   "messages": {
     "loadError": "Fehler beim Laden der Journal-Fragen. Bitte Seite neu laden.",

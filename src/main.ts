@@ -41,11 +41,54 @@ class LanguageManager {
   }
 }
 
+class ThemeManager {
+  private static readonly STORAGE_KEY = 'journal-prompts-theme';
+  private static readonly DEFAULT_THEME = 'light';
+  private static readonly AVAILABLE_THEMES = ['light', 'dark'];
+
+  static getCurrentTheme(): string {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (stored && this.AVAILABLE_THEMES.includes(stored)) {
+        return stored;
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to read theme from localStorage:', error);
+    }
+    return this.DEFAULT_THEME;
+  }
+
+  static setTheme(theme: string): void {
+    if (!this.AVAILABLE_THEMES.includes(theme)) {
+      throw new Error(`Unsupported theme: ${theme}`);
+    }
+    
+    try {
+      localStorage.setItem(this.STORAGE_KEY, theme);
+      // Update HTML data-theme attribute
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to save theme to localStorage:', error);
+    }
+  }
+
+  static getAvailableThemes(): string[] {
+    return [...this.AVAILABLE_THEMES];
+  }
+}
+
 class JournalPromptsApp {
   private categoryGroups: CategoryGroup = {};
   private currentCategory: string = '';
   private currentPrompt: Prompt | null = null;
   private currentLanguage: string = '';
+  private currentTheme: string = '';
   private categorySelectionEl: HTMLElement;
   private promptDisplayEl: HTMLElement;
   private categoryDropdownEl: HTMLSelectElement;
@@ -57,6 +100,7 @@ class JournalPromptsApp {
   private newPromptBtnEl: HTMLElement;
   private copyLinkBtnEl: HTMLElement;
   private languageSwitcherEl: HTMLElement;
+  private themeSwitcherEl: HTMLElement;
   private purposeVisible: boolean = false;
 
   constructor() {
@@ -71,6 +115,7 @@ class JournalPromptsApp {
     this.newPromptBtnEl = document.getElementById('new-prompt-btn')!;
     this.copyLinkBtnEl = document.getElementById('copy-link-btn')!;
     this.languageSwitcherEl = document.getElementById('language-switcher')!;
+    this.themeSwitcherEl = document.getElementById('theme-switcher')!;
 
     void this.init();
   }
@@ -78,11 +123,13 @@ class JournalPromptsApp {
   private async init(): Promise<void> {
     try {
       this.initializeLanguage();
+      this.initializeTheme();
       await this.initializeTranslations();
       await this.loadAndDisplayCategories();
       this.updateUIText();
       this.setupEventListeners();
       this.setupLanguageSwitcher();
+      this.setupThemeSwitcher();
       this.handleDeepLink();
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -94,6 +141,11 @@ class JournalPromptsApp {
   private initializeLanguage(): void {
     this.currentLanguage = LanguageManager.getCurrentLanguage();
     document.documentElement.lang = this.currentLanguage.toLowerCase();
+  }
+
+  private initializeTheme(): void {
+    this.currentTheme = ThemeManager.getCurrentTheme();
+    ThemeManager.setTheme(this.currentTheme);
   }
 
   private async initializeTranslations(): Promise<void> {
@@ -118,6 +170,9 @@ class JournalPromptsApp {
 
     // Update language switcher tooltips
     this.updateLanguageSwitcherTooltips();
+
+    // Update theme switcher tooltips
+    this.updateThemeSwitcherTooltips();
   }
 
   private updateDropdownPlaceholder(): void {
@@ -392,6 +447,9 @@ class JournalPromptsApp {
       // Update language button states
       this.updateLanguageButtons();
 
+      // Update theme switcher tooltips
+      this.updateThemeSwitcherTooltips();
+
       // Restore state if we were viewing a prompt
       if (wasOnPromptScreen && currentPromptId) {
         const prompt = findPromptById(this.categoryGroups, currentPromptId);
@@ -414,6 +472,64 @@ class JournalPromptsApp {
       console.error('Failed to switch language:', error);
       // Fallback: reload the page
       window.location.reload();
+    }
+  }
+
+  private setupThemeSwitcher(): void {
+    // Initialize theme button states
+    this.updateThemeButtons();
+
+    // Add event listeners for theme buttons
+    const themeButtons = this.themeSwitcherEl.querySelectorAll('.theme-btn');
+    
+    themeButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const target = e.target as HTMLButtonElement;
+        const theme = target.dataset.theme;
+        if (theme && theme !== this.currentTheme) {
+          this.switchTheme(theme);
+        }
+      });
+    });
+  }
+
+  private updateThemeButtons(): void {
+    const themeButtons = this.themeSwitcherEl.querySelectorAll('.theme-btn');
+    themeButtons.forEach(button => {
+      const btnElement = button as HTMLButtonElement;
+      const theme = btnElement.dataset.theme;
+      if (theme === this.currentTheme) {
+        btnElement.classList.add('active');
+      } else {
+        btnElement.classList.remove('active');
+      }
+    });
+  }
+
+  private updateThemeSwitcherTooltips(): void {
+    const lightButton = document.getElementById('theme-light') as HTMLElement;
+    const darkButton = document.getElementById('theme-dark') as HTMLElement;
+    
+    if (lightButton) {
+      lightButton.title = TranslationManager.get('buttons.switchToLight');
+    }
+    if (darkButton) {
+      darkButton.title = TranslationManager.get('buttons.switchToDark');
+    }
+  }
+
+  private switchTheme(newTheme: string): void {
+    try {
+      // Save theme preference
+      ThemeManager.setTheme(newTheme);
+      this.currentTheme = newTheme;
+
+      // Update theme button states
+      this.updateThemeButtons();
+
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to switch theme:', error);
     }
   }
 

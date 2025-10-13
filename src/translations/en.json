@@ -13,7 +13,9 @@
     "copyLink": "Copy link to this prompt",
     "goBack": "Go back to category selection",
     "switchToEnglish": "Switch to English",
-    "switchToGerman": "Switch to German"
+    "switchToGerman": "Switch to German",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
   },
   "messages": {
     "loadError": "Failed to load journal prompts. Please refresh the page.",
