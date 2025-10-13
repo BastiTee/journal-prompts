@@ -307,6 +307,7 @@ main {
   width: 30px;
   height: 30px;
   line-height: 1;
+  pointer-events: none;
 }
 
 .action-btn.primary {
@@ -338,8 +339,14 @@ main {
 }
 
 .action-btn.copied {
-  background: linear-gradient(135deg, var(--success-primary) 0%, var(--success-secondary) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   color: var(--bg-input);
+}
+
+.action-btn.copied:hover {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--shadow-accent);
 }
 
 /* Error styles */

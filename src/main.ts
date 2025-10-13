@@ -372,7 +372,7 @@ class JournalPromptsApp {
       setTimeout(() => {
         this.copyLinkBtnEl.title = originalTitle;
         this.copyLinkBtnEl.classList.remove('copied');
-      }, 2000);
+      }, 1000);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to copy link:', error);
@@ -396,7 +396,7 @@ class JournalPromptsApp {
       setTimeout(() => {
         this.copyLinkBtnEl.title = originalTitle;
         this.copyLinkBtnEl.classList.remove('copied');
-      }, 2000);
+      }, 1000);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Fallback copy failed:', error);
