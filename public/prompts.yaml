@@ -58,6 +58,13 @@ prompt: |
 purpose: |
   Foster self-compassion and confidence in the path you're on.
 ---
+id: CA6
+category: Changing Inner Attitude
+prompt: |
+  When do you feel most creative, and how can you make more space for that in your life?
+purpose: |
+  Encourages exploration of conditions that foster inspiration and flow.
+---
 id: CM1
 category: Changing Mood
 prompt: |
@@ -151,6 +158,13 @@ prompt: |
   Write down three great things that happened today.
 purpose: |
   Develop positive thoughts and attitudes.
+---
+id: G6
+category: Gratitude
+prompt: |
+  Imagine yourself five years from now. What would you thank your present self for doing today?
+purpose: |
+  Encourages intentional decision-making and long-term visioning.
 ---
 id: MP1
 category: Morning Pages
@@ -259,3 +273,31 @@ prompt: |
 purpose: |
   Recognize whether you are on the path to your goals and what might hold you
   back.
+---
+id: PD10
+category: Personal Development
+prompt: |
+  What belief about yourself has changed in the past year, and what caused that shift?
+purpose: |
+  Encourages awareness of evolving self-perceptions and cognitive growth.
+---
+id: PD11
+category: Personal Development
+prompt: |
+  What is something you once thought you couldn't do but proved yourself wrong about?
+purpose: | 
+  Builds confidence by recognizing moments of resilience and capability.
+---
+id: PD12
+category: Personal Development
+prompt: |
+  What habits or patterns keep repeating in your life, and what do they reveal about your deeper motivations?
+purpose: |
+  Promotes mindful awareness of recurring behaviors and their underlying causes.
+---
+id: PD12
+category: Personal Development
+prompt: |
+  If you could dedicate your life to solving one problem, what would it be and why?
+purpose: |
+  Clarifies values and sense of mission by connecting to a larger purpose.
