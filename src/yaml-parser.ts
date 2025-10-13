@@ -10,7 +10,7 @@ marked.setOptions({
 
 export async function loadPrompts(): Promise<CategoryGroup> {
   try {
-    const response = await fetch('/journal-prompts/prompts.yaml');
+    const response = await fetch('/journal-prompts/prompts_EN.yaml');
     if (!response.ok) {
       throw new Error(`Failed to fetch prompts: ${response.statusText}`);
     }
