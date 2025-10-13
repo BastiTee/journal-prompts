@@ -15,9 +15,19 @@
         <div id="category-selection" class="screen">
           <div class="category-selector">
             <label for="category-dropdown" class="category-label">Choose a Category</label>
-            <select id="category-dropdown" class="category-dropdown">
-              <option value="">Select a category...</option>
-            </select>
+            <div class="custom-dropdown" id="category-dropdown">
+              <button class="dropdown-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown-text">Select a category...</span>
+                <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M7 10l5 5 5-5z"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu" role="listbox" aria-hidden="true">
+                <div class="dropdown-content">
+                  <!-- Options will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         

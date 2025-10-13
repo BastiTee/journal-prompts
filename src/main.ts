@@ -91,7 +91,11 @@ class JournalPromptsApp {
   private currentTheme: string = '';
   private categorySelectionEl: HTMLElement;
   private promptDisplayEl: HTMLElement;
-  private categoryDropdownEl: HTMLSelectElement;
+  private categoryDropdownEl: HTMLElement;
+  private dropdownTriggerEl: HTMLButtonElement;
+  private dropdownMenuEl: HTMLElement;
+  private dropdownContentEl: HTMLElement;
+  private dropdownTextEl: HTMLElement;
   private categoryBadgeEl: HTMLElement;
   private promptTextEl: HTMLElement;
   private promptPurposeEl: HTMLElement;
@@ -106,7 +110,11 @@ class JournalPromptsApp {
   constructor() {
     this.categorySelectionEl = document.getElementById('category-selection')!;
     this.promptDisplayEl = document.getElementById('prompt-display')!;
-    this.categoryDropdownEl = document.getElementById('category-dropdown') as HTMLSelectElement;
+    this.categoryDropdownEl = document.getElementById('category-dropdown')!;
+    this.dropdownTriggerEl = this.categoryDropdownEl.querySelector('.dropdown-trigger') as HTMLButtonElement;
+    this.dropdownMenuEl = this.categoryDropdownEl.querySelector('.dropdown-menu')!;
+    this.dropdownContentEl = this.categoryDropdownEl.querySelector('.dropdown-content')!;
+    this.dropdownTextEl = this.categoryDropdownEl.querySelector('.dropdown-text')!;
     this.categoryBadgeEl = document.querySelector('.category-badge')!;
     this.promptTextEl = document.querySelector('.prompt-text')!;
     this.promptPurposeEl = document.querySelector('.prompt-purpose')!;
@@ -176,10 +184,7 @@ class JournalPromptsApp {
   }
 
   private updateDropdownPlaceholder(): void {
-    const placeholderOption = this.categoryDropdownEl.querySelector('option[value=""]') as HTMLOptionElement;
-    if (placeholderOption) {
-      placeholderOption.textContent = TranslationManager.get('categorySelection.placeholder');
-    }
+    this.dropdownTextEl.textContent = TranslationManager.get('categorySelection.placeholder');
   }
 
   private updateButtonTooltips(): void {
@@ -214,15 +219,43 @@ class JournalPromptsApp {
   private populateDropdown(): void {
     const categories = Object.keys(this.categoryGroups);
 
-    // Clear existing options and add translated placeholder
-    this.categoryDropdownEl.innerHTML = `<option value="">${TranslationManager.get('categorySelection.placeholder')}</option>`;
+    // Clear existing content
+    this.dropdownContentEl.innerHTML = '';
 
+    // Add category options
     categories.forEach(category => {
-      const option = document.createElement('option');
-      option.value = category;
+      const option = document.createElement('button');
+      option.className = 'dropdown-option';
       option.textContent = category;
-      this.categoryDropdownEl.appendChild(option);
+      option.setAttribute('data-value', category);
+      option.addEventListener('click', () => this.selectDropdownOption(category));
+      this.dropdownContentEl.appendChild(option);
     });
+  }
+
+  private selectDropdownOption(category: string): void {
+    this.dropdownTextEl.textContent = category;
+    this.closeDropdown();
+    this.selectCategory(category);
+  }
+
+  private openDropdown(): void {
+    this.dropdownTriggerEl.setAttribute('aria-expanded', 'true');
+    this.dropdownMenuEl.setAttribute('aria-hidden', 'false');
+  }
+
+  private closeDropdown(): void {
+    this.dropdownTriggerEl.setAttribute('aria-expanded', 'false');
+    this.dropdownMenuEl.setAttribute('aria-hidden', 'true');
+  }
+
+  private toggleDropdown(): void {
+    const isOpen = this.dropdownTriggerEl.getAttribute('aria-expanded') === 'true';
+    if (isOpen) {
+      this.closeDropdown();
+    } else {
+      this.openDropdown();
+    }
   }
 
   private selectCategory(category: string): void {
@@ -272,10 +305,23 @@ class JournalPromptsApp {
   }
 
   private setupEventListeners(): void {
-    this.categoryDropdownEl.addEventListener('change', (e) => {
-      const selectedCategory = (e.target as HTMLSelectElement).value;
-      if (selectedCategory) {
-        this.selectCategory(selectedCategory);
+    // Custom dropdown event listeners
+    this.dropdownTriggerEl.addEventListener('click', () => this.toggleDropdown());
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!this.categoryDropdownEl.contains(e.target as Node)) {
+        this.closeDropdown();
+      }
+    });
+
+    // Keyboard navigation for dropdown
+    this.dropdownTriggerEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.toggleDropdown();
+      } else if (e.key === 'Escape') {
+        this.closeDropdown();
       }
     });
 
@@ -300,7 +346,8 @@ class JournalPromptsApp {
   private showCategorySelection(): void {
     this.promptDisplayEl.classList.add('hidden');
     this.categorySelectionEl.classList.remove('hidden');
-    this.categoryDropdownEl.value = '';
+    this.dropdownTextEl.textContent = TranslationManager.get('categorySelection.placeholder');
+    this.closeDropdown();
     this.currentCategory = '';
     this.currentPrompt = null;
 
