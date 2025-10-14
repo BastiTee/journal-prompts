@@ -1,6 +1,8 @@
 # Journal Prompts
 
-An analog-inspired single-page web application for journaling prompts that helps users understand and reflect on themselves.
+> An analog-inspired single-page web application for journaling prompts that helps users understand and reflect on themselves.
+> 
+> **<https://bastitee.github.io/journal-prompts/>**
 
 ## Features
 
