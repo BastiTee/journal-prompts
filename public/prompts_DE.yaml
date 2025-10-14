@@ -15,14 +15,14 @@ purpose: |
 id: B3
 category: Biografie
 prompt: |
-  Was ist eine wichtige Erinnerung aus deiner Kindheit, die du heute noch mit dir trägst? Was verrät sie über dich?
+  Beschreibe eine wichtige Erinnerung aus deiner Kindheit, die du heute noch mit dir trägst? Was verrät sie über dich?
 purpose: |
   Erkunde die langfristige emotionale Wirkung prägender Erfahrungen.
 ---
 id: B4
 category: Biografie
 prompt: |
-  Wenn du eine Minute hättest, um dich einem Fremden zu beschreiben, was würdest du sagen?
+  Was würdest du sagen, wenn du eine Minute hättest, um dich einem Fremden vorzustellen?
 purpose: |
   Erkunde, wie du über dich selbst denkst. Mache eine persönliche Momentaufnahme.
 ---
@@ -44,14 +44,14 @@ purpose: |
 id: CA2
 category: Innere Einstellung ändern
 prompt: |
-  Wie ist *eine Sache* das Beste, was dir je passiert ist?
+  Denke an *etwas*, dass du kürzlich erlebt hast. Warum ist *dieses Erlebnis* das Beste, was dir je passiert ist?
 purpose: |
   Verstehe, wie wir Dinge anders betrachten können.
 ---
 id: CA3
 category: Innere Einstellung ändern
 prompt: |
-  Wie wäre *eine Sache*, wenn sie dir Spaß machen würde?
+  Denke an *etwas*, dass dir gerade schwer fällt. Wie wäre *diese Sache*, wenn sie dir Spaß machen würde?
 purpose: |
   Verstehe, wie wir Dinge anders betrachten können.
 ---
@@ -65,14 +65,14 @@ purpose: |
 id: CA5
 category: Innere Einstellung ändern
 prompt: |
-  Schreibe einen Brief an dein zukünftiges Ich voller Vertrauen und Optimismus. Woran soll es sich über den heutigen Tag erinnern?
+  Schreibe einen optimistischen Brief an dein zukünftiges Ich. Woran soll es sich über den heutigen Tag erinnern?
 purpose: |
   Fördere Selbstmitgefühl und Vertrauen in den Weg, den du gehst.
 ---
 id: CA6
 category: Innere Einstellung ändern
 prompt: |
-  Wann fühlst du dich am kreativsten und wie kannst du mehr Raum dafür in deinem Leben schaffen?
+  Wann fühlst du dich am kreativsten? Wie kannst du mehr Raum dafür in deinem Leben schaffen?
 purpose: |
   Ermutigt zur Erkundung von Bedingungen, die Inspiration und Flow fördern.
 ---
@@ -86,7 +86,7 @@ purpose: |
 id: CM2
 category: Stimmung ändern
 prompt: |
-  Liste fünf Dinge auf, die du jetzt gleich tun könntest, um deine Stimmung zu verbessern oder deinen Geist zu beruhigen.
+  Liste fünf Dinge auf, die du jetzt gleich tun könntest, um deine Stimmung zu verbessern oder dich zu beruhigen.
 purpose: |
   Ermutige proaktive Selbstregulation und emotionale Bewusstheit.
 ---
@@ -128,7 +128,7 @@ purpose: |
 id: DR2
 category: Tägliche Reflexion
 prompt: |
-  Was hast du heute gelernt?
+  Was hast du heute gelernt, dass du gestern noch nicht wusstest?
 purpose: |
   Decke Tendenzen und innere Einstellungen auf. Verarbeite und kategorisiere Erfahrungen.
 ---
@@ -149,7 +149,7 @@ purpose: |
 id: G1
 category: Dankbarkeit
 prompt: |
-  Denke an eine Herausforderung, die du kürzlich überwunden hast. Welche verborgenen Geschenke hat sie dir gebracht?
+  Denke an eine Herausforderung, die du kürzlich überwunden hast. Was hat es mit dir gemacht?
 purpose: |
   Kultiviere Wertschätzung für Wachstum durch Schwierigkeiten.
 ---
@@ -184,7 +184,7 @@ purpose: |
 id: G6
 category: Dankbarkeit
 prompt: |
-  Stelle dir vor, du bist fünf Jahre in der Zukunft. Wofür würdest du deinem heutigen Ich danken, was es heute getan hat?
+  Stelle dir vor, du bist fünf Jahre in der Zukunft. Wofür würdest du deinem heutigen Ich danken, dass es heute getan hat?
 purpose: |
   Ermutigt zu bewusster Entscheidungsfindung und langfristiger Zukunftsplanung.
 ---
@@ -212,8 +212,10 @@ purpose: |
 id: PD1
 category: Persönlichkeitsentwicklung
 prompt: |
+  Schreibe ein Ziel auf.
+
   Wie würde jeder der folgenden Charaktere auf eines deiner Ziele oder Wünsche reagieren?
-  Jemand, der sucht nach...
+  Jemand, mit einer Vorliebe/einem Hang für...
 
   * Sicherheit und Stabilität
 
