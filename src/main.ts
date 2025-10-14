@@ -167,7 +167,7 @@ class JournalPromptsApp {
     // Update category selection label
     const categoryLabel = document.querySelector('.category-label') as HTMLElement;
     if (categoryLabel) {
-      categoryLabel.textContent = TranslationManager.get('categorySelection.label');
+      categoryLabel.innerHTML = TranslationManager.get('categorySelection.label');
     }
 
     // Update dropdown placeholder
