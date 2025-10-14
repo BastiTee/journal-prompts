@@ -44,7 +44,7 @@ purpose: |
 id: CA2
 category: Innere Einstellung ändern
 prompt: |
-  Denke an *etwas*, dass du kürzlich erlebt hast. Warum ist *dieses Erlebnis* das Beste, was dir je passiert ist?
+  Denke an *etwas Negatives*, das du kürzlich erlebt hast. Warum ist *dieses Erlebnis* das Beste, was dir je passiert ist?
 purpose: |
   Verstehe, wie wir Dinge anders betrachten können.
 ---
