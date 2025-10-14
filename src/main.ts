@@ -138,7 +138,14 @@ class JournalPromptsApp {
       this.setupEventListeners();
       this.setupLanguageSwitcher();
       this.setupThemeSwitcher();
-      this.handleDeepLink();
+      
+      // Ensure prompts are loaded before handling deep links
+      if (Object.keys(this.categoryGroups).length > 0) {
+        this.handleDeepLink();
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('No prompts loaded, skipping deep link handling');
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to initialize app:', error);
@@ -363,7 +370,7 @@ class JournalPromptsApp {
 
   private updateUrl(prompt: Prompt): void {
     const params = new URLSearchParams();
-    params.set('id', prompt.id.toString());
+    params.set('id', prompt.id);
 
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
@@ -374,16 +381,26 @@ class JournalPromptsApp {
     const promptId = params.get('id');
     const category = params.get('category');
 
+    // eslint-disable-next-line no-console
+    console.log('Deep link handling - URL params:', {
+      promptId,
+      category,
+      categoryGroupsLoaded: Object.keys(this.categoryGroups).length > 0,
+      availableCategories: Object.keys(this.categoryGroups)
+    });
+
     // Try new ID-based system first
     if (promptId) {
-      const numericId = parseInt(promptId, 10);
-      if (!isNaN(numericId)) {
-        const prompt = findPromptById(this.categoryGroups, numericId);
-        if (prompt) {
-          this.currentCategory = prompt.category;
-          this.displayPrompt(prompt);
-          return;
-        }
+      const prompt = findPromptById(this.categoryGroups, promptId);
+      if (prompt) {
+        // eslint-disable-next-line no-console
+        console.log('Deep link success - Found prompt by ID:', prompt);
+        this.currentCategory = prompt.category;
+        this.displayPrompt(prompt);
+        return;
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('Deep link failed - Prompt ID not found:', promptId);
       }
     }
 
@@ -395,15 +412,31 @@ class JournalPromptsApp {
       const matchingPrompt = prompts.find(p => p.prompt.startsWith(decodedPrefix));
 
       if (matchingPrompt) {
+        // eslint-disable-next-line no-console
+        console.log('Deep link success - Found prompt by prefix:', matchingPrompt);
         this.currentCategory = category;
         this.displayPrompt(matchingPrompt);
         return;
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('Deep link failed - Prompt prefix not found:', decodedPrefix);
       }
     }
 
     // Category-only fallback
     if (category && this.categoryGroups[category]) {
+      // eslint-disable-next-line no-console
+      console.log('Deep link fallback - Selecting random prompt from category:', category);
       this.selectCategory(category);
+      return;
+    }
+
+    // If we get here, the deep link failed completely
+    if (promptId || category) {
+      // eslint-disable-next-line no-console
+      console.warn('Deep link failed completely - falling back to home page');
+      // Clear invalid URL parameters and stay on home page
+      window.history.replaceState({}, '', window.location.pathname);
     }
   }
 

@@ -54,7 +54,7 @@ export function parseMarkdown(text: string): string {
   return marked(text) as string;
 }
 
-export function findPromptById(categoryGroups: CategoryGroup, id: number): Prompt | null {
+export function findPromptById(categoryGroups: CategoryGroup, id: string): Prompt | null {
   for (const category in categoryGroups) {
     const prompt = categoryGroups[category].find(p => p.id === id);
     if (prompt) {
