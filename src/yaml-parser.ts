@@ -10,7 +10,7 @@ marked.setOptions({
 
 export async function loadPrompts(language: string = 'EN'): Promise<CategoryGroup> {
   try {
-    const response = await fetch(`/prompts_${language}.yaml`);
+    const response = await fetch(`./prompts_${language}.yaml`);
     if (!response.ok) {
       throw new Error(`Failed to fetch prompts: ${response.statusText}`);
     }
