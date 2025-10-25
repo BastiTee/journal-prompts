@@ -589,7 +589,7 @@ main {
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   position: relative;
-  z-index: -1;
+  z-index: 1;
 }
 
 .theme-switcher:hover,
@@ -764,7 +764,7 @@ main {
   margin-top: 2.5rem;
   padding: 0;
   position: relative;
-  z-index: -1;
+  z-index: 1;
 }
 
 /* Pin button styling when in action bar */
