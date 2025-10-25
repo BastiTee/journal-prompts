@@ -23,25 +23,5 @@
     "loadError": "Fehler beim Laden der Journal-Fragen. Bitte Seite neu laden.",
     "errorTitle": "Fehler",
     "copied": "Kopiert!"
-  },
-  "errors": {
-    "initializationFailed": "Fehler beim Initialisieren der App",
-    "promptDisplayNotFound": "Prompt-Anzeige-Element nicht gefunden",
-    "categoryDropdownNotFound": "Kategorie-Dropdown-Element nicht gefunden",
-    "languageSwitcherNotFound": "Sprachwahlschalter-Element nicht gefunden",
-    "themeSwitcherNotFound": "Theme-Wahlschalter-Element nicht gefunden",
-    "dropdownTriggerNotFound": "Dropdown-Auslöser-Element nicht gefunden",
-    "dropdownMenuNotFound": "Dropdown-Menü-Element nicht gefunden",
-    "dropdownContentNotFound": "Dropdown-Inhalt-Element nicht gefunden",
-    "dropdownTextNotFound": "Dropdown-Text-Element nicht gefunden",
-    "promptTextNotFound": "Prompt-Text-Element nicht gefunden",
-    "promptPurposeNotFound": "Prompt-Zweck-Element nicht gefunden",
-    "togglePurposeButtonNotFound": "Zweck-Toggle-Button-Element nicht gefunden",
-    "newPromptButtonNotFound": "Neue-Frage-Button-Element nicht gefunden",
-    "copyLinkButtonNotFound": "Link-Kopieren-Button-Element nicht gefunden",
-    "pinButtonNotFound": "Anheften-Button-Element nicht gefunden"
-  },
-  "accessibility": {
-    "pinCategory": "Kategorie anheften"
   }
 }
