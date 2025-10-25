@@ -10,16 +10,38 @@
     "showPurpose": "Show the purpose of this exercise",
     "hidePurpose": "Hide the purpose of this exercise",
     "newPrompt": "Get a new prompt",
+    "newPromptFromAnyCategory": "Get a new prompt from any category",
     "copyLink": "Copy link to this prompt",
-    "goBack": "Go back to category selection",
     "switchToEnglish": "Switch to English",
     "switchToGerman": "Switch to German",
     "switchToLight": "Switch to light mode",
-    "switchToDark": "Switch to dark mode"
+    "switchToDark": "Switch to dark mode",
+    "pinCategory": "Pin this category",
+    "unpinCategory": "Unpin category (get prompts from all categories)"
   },
   "messages": {
     "loadError": "Failed to load journal prompts. Please refresh the page.",
     "errorTitle": "Error",
     "copied": "Copied!"
+  },
+  "errors": {
+    "initializationFailed": "Failed to initialize app",
+    "promptDisplayNotFound": "Prompt display element not found",
+    "categoryDropdownNotFound": "Category dropdown element not found",
+    "languageSwitcherNotFound": "Language switcher element not found",
+    "themeSwitcherNotFound": "Theme switcher element not found",
+    "dropdownTriggerNotFound": "Dropdown trigger element not found",
+    "dropdownMenuNotFound": "Dropdown menu element not found",
+    "dropdownContentNotFound": "Dropdown content element not found",
+    "dropdownTextNotFound": "Dropdown text element not found",
+    "promptTextNotFound": "Prompt text element not found",
+    "promptPurposeNotFound": "Prompt purpose element not found",
+    "togglePurposeButtonNotFound": "Toggle purpose button element not found",
+    "newPromptButtonNotFound": "New prompt button element not found",
+    "copyLinkButtonNotFound": "Copy link button element not found",
+    "pinButtonNotFound": "Pin button element not found"
+  },
+  "accessibility": {
+    "pinCategory": "Pin category"
   }
 }

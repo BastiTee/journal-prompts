@@ -36,9 +36,6 @@ class LanguageManager {
     }
   }
 
-  static getAvailableLanguages(): string[] {
-    return [...this.AVAILABLE_LANGUAGES];
-  }
 }
 
 class ThemeManager {
@@ -78,9 +75,6 @@ class ThemeManager {
     }
   }
 
-  static getAvailableThemes(): string[] {
-    return [...this.AVAILABLE_THEMES];
-  }
 }
 
 class JournalPromptsApp {
@@ -90,20 +84,20 @@ class JournalPromptsApp {
   private currentLanguage: string = '';
   private currentTheme: string = '';
   private isPinned: boolean = false;
-  private promptDisplayEl: HTMLElement;
-  private categoryDropdownEl: HTMLElement;
-  private dropdownTriggerEl: HTMLButtonElement;
-  private dropdownMenuEl: HTMLElement;
-  private dropdownContentEl: HTMLElement;
-  private dropdownTextEl: HTMLElement;
-  private promptTextEl: HTMLElement;
-  private promptPurposeEl: HTMLElement;
-  private togglePurposeBtnEl: HTMLElement;
-  private newPromptBtnEl: HTMLElement;
-  private copyLinkBtnEl: HTMLElement;
-  private pinBtnEl: HTMLElement;
-  private languageSwitcherEl: HTMLElement;
-  private themeSwitcherEl: HTMLElement;
+  private promptDisplayEl!: HTMLElement;
+  private categoryDropdownEl!: HTMLElement;
+  private dropdownTriggerEl!: HTMLButtonElement;
+  private dropdownMenuEl!: HTMLElement;
+  private dropdownContentEl!: HTMLElement;
+  private dropdownTextEl!: HTMLElement;
+  private promptTextEl!: HTMLElement;
+  private promptPurposeEl!: HTMLElement;
+  private togglePurposeBtnEl!: HTMLElement;
+  private newPromptBtnEl!: HTMLElement;
+  private copyLinkBtnEl!: HTMLElement;
+  private pinBtnEl!: HTMLElement;
+  private languageSwitcherEl!: HTMLElement;
+  private themeSwitcherEl!: HTMLElement;
   private purposeVisible: boolean = false;
 
   constructor() {
@@ -116,16 +110,16 @@ class JournalPromptsApp {
 
       // Verify main elements exist
       if (!this.promptDisplayEl) {
-        throw new Error('Prompt display element not found');
+        throw new Error(TranslationManager.get('errors.promptDisplayNotFound'));
       }
       if (!this.categoryDropdownEl) {
-        throw new Error('Category dropdown element not found');
+        throw new Error(TranslationManager.get('errors.categoryDropdownNotFound'));
       }
       if (!this.languageSwitcherEl) {
-        throw new Error('Language switcher element not found');
+        throw new Error(TranslationManager.get('errors.languageSwitcherNotFound'));
       }
       if (!this.themeSwitcherEl) {
-        throw new Error('Theme switcher element not found');
+        throw new Error(TranslationManager.get('errors.themeSwitcherNotFound'));
       }
 
       // Get dropdown elements
@@ -136,16 +130,16 @@ class JournalPromptsApp {
 
       // Verify dropdown elements exist
       if (!this.dropdownTriggerEl) {
-        throw new Error('Dropdown trigger element not found');
+        throw new Error(TranslationManager.get('errors.dropdownTriggerNotFound'));
       }
       if (!this.dropdownMenuEl) {
-        throw new Error('Dropdown menu element not found');
+        throw new Error(TranslationManager.get('errors.dropdownMenuNotFound'));
       }
       if (!this.dropdownContentEl) {
-        throw new Error('Dropdown content element not found');
+        throw new Error(TranslationManager.get('errors.dropdownContentNotFound'));
       }
       if (!this.dropdownTextEl) {
-        throw new Error('Dropdown text element not found');
+        throw new Error(TranslationManager.get('errors.dropdownTextNotFound'));
       }
 
       // Get prompt elements
@@ -154,10 +148,10 @@ class JournalPromptsApp {
 
       // Verify prompt elements exist
       if (!this.promptTextEl) {
-        throw new Error('Prompt text element not found');
+        throw new Error(TranslationManager.get('errors.promptTextNotFound'));
       }
       if (!this.promptPurposeEl) {
-        throw new Error('Prompt purpose element not found');
+        throw new Error(TranslationManager.get('errors.promptPurposeNotFound'));
       }
 
       // Get button elements
@@ -168,21 +162,22 @@ class JournalPromptsApp {
 
       // Verify button elements exist
       if (!this.togglePurposeBtnEl) {
-        throw new Error('Toggle purpose button element not found');
+        throw new Error(TranslationManager.get('errors.togglePurposeButtonNotFound'));
       }
       if (!this.newPromptBtnEl) {
-        throw new Error('New prompt button element not found');
+        throw new Error(TranslationManager.get('errors.newPromptButtonNotFound'));
       }
       if (!this.copyLinkBtnEl) {
-        throw new Error('Copy link button element not found');
+        throw new Error(TranslationManager.get('errors.copyLinkButtonNotFound'));
       }
       if (!this.pinBtnEl) {
-        throw new Error('Pin button element not found');
+        throw new Error(TranslationManager.get('errors.pinButtonNotFound'));
       }
 
       void this.init();
     } catch (error) {
       console.error('Constructor error:', error);
+      // Show fallback error message since translations might not be initialized yet
       document.body.innerHTML = `<div class="error"><h1>Error</h1><p>Failed to initialize app: ${error}</p></div>`;
     }
   }
@@ -270,13 +265,14 @@ class JournalPromptsApp {
     // Update other button tooltips
     this.newPromptBtnEl.title = this.isPinned 
       ? TranslationManager.get('buttons.newPrompt')
-      : 'Get a new prompt from any category';
+      : TranslationManager.get('buttons.newPromptFromAnyCategory');
     this.copyLinkBtnEl.title = TranslationManager.get('buttons.copyLink');
     
-    // Update pin button tooltip
+    // Update pin button tooltip and aria-label
     this.pinBtnEl.title = this.isPinned 
-      ? 'Unpin category (get prompts from all categories)'
-      : 'Pin this category';
+      ? TranslationManager.get('buttons.unpinCategory')
+      : TranslationManager.get('buttons.pinCategory');
+    this.pinBtnEl.setAttribute('aria-label', TranslationManager.get('accessibility.pinCategory'));
   }
 
   private updateLanguageSwitcherTooltips(): void {
