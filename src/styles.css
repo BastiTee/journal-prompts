@@ -216,7 +216,7 @@ main {
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 2000;
   margin-top: 0.5rem;
   background: var(--bg-card);
   border: 1px solid var(--border-secondary);
@@ -750,14 +750,14 @@ main {
   }
 }
 
-/* Bottom controls styling */
-.bottom-controls {
+/* Main controls styling - positioned under the prompt card */
+.main-controls {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
-  padding: 2rem 0 1rem 0;
-  margin-top: auto;
+  margin-top: 2.5rem;
+  padding: 0;
 }
 
 /* Pin button styling when in action bar */
@@ -783,17 +783,17 @@ main {
   display: none;
 }
 
-/* Responsive updates for bottom controls */
+/* Responsive updates for main controls */
 @media (max-width: 768px) {
-  .bottom-controls {
+  .main-controls {
     gap: 1rem;
-    padding: 1.5rem 0 1rem 0;
+    margin-top: 2rem;
   }
 }
 
 @media (max-width: 480px) {
-  .bottom-controls {
+  .main-controls {
     gap: 0.8rem;
-    padding: 1rem 0 0.5rem 0;
+    margin-top: 1.5rem;
   }
 }
