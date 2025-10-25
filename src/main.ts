@@ -1,6 +1,7 @@
 import { loadPrompts, getRandomPrompt, parseMarkdown, findPromptById } from './yaml-parser.ts';
 import { CategoryGroup, Prompt } from './types.ts';
 import { TranslationManager } from './translations.ts';
+import { replaceIcon } from './icons.ts';
 import './styles.css';
 
 class LanguageManager {
@@ -160,11 +161,33 @@ class JournalPromptsApp {
         throw new Error('Pin button element not found');
       }
 
+      // Replace all icons with Lucide icons
+      this.replaceAllIcons();
+
       void this.init();
     } catch (error) {
       console.error('Constructor error:', error);
       // Show fallback error message since translations might not be initialized yet
       document.body.innerHTML = `<div class="error"><h1>Error</h1><p>Failed to initialize app: ${error}</p></div>`;
+    }
+  }
+
+  private replaceAllIcons(): void {
+    // Replace action button icons
+    replaceIcon(this.newPromptBtnEl, 'reload');
+    replaceIcon(this.pinBtnEl, 'pin');
+    replaceIcon(this.copyLinkBtnEl, 'link');
+    replaceIcon(this.togglePurposeBtnEl, 'question');
+
+    // Replace theme switcher icons
+    const lightThemeBtn = document.getElementById('theme-light');
+    const darkThemeBtn = document.getElementById('theme-dark');
+    
+    if (lightThemeBtn) {
+      replaceIcon(lightThemeBtn, 'sun');
+    }
+    if (darkThemeBtn) {
+      replaceIcon(darkThemeBtn, 'moon');
     }
   }
 
