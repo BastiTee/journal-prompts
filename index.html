@@ -71,19 +71,10 @@
             
             <!-- Category selector under prompt/purpose -->
             <div class="category-selector-container">
-              <div class="custom-dropdown" id="category-dropdown">
-                <button class="dropdown-trigger category-selector-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-                  <span class="dropdown-text"></span>
-                  <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M7 10l5 5 5-5z"/>
-                  </svg>
-                </button>
-                <div class="dropdown-menu" role="listbox" aria-hidden="true">
-                  <div class="dropdown-content">
-                    <!-- Options will be populated by JavaScript -->
-                  </div>
-                </div>
-              </div>
+              <select id="category-select" class="category-select">
+                <option value="" disabled selected>Select a category...</option>
+                <!-- Options will be populated by JavaScript -->
+              </select>
             </div>
             
             <!-- Action buttons with pin button added -->
