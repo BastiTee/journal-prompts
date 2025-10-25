@@ -9,7 +9,7 @@
   "buttons": {
     "showPurpose": "Show the purpose of this exercise",
     "hidePurpose": "Hide the purpose of this exercise",
-    "newPrompt": "Get a new prompt from this category",
+    "newPrompt": "Get a new prompt",
     "copyLink": "Copy link to this prompt",
     "goBack": "Go back to category selection",
     "switchToEnglish": "Switch to English",

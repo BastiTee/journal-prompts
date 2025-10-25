@@ -89,43 +89,102 @@ class JournalPromptsApp {
   private currentPrompt: Prompt | null = null;
   private currentLanguage: string = '';
   private currentTheme: string = '';
-  private categorySelectionEl: HTMLElement;
+  private isPinned: boolean = false;
   private promptDisplayEl: HTMLElement;
   private categoryDropdownEl: HTMLElement;
   private dropdownTriggerEl: HTMLButtonElement;
   private dropdownMenuEl: HTMLElement;
   private dropdownContentEl: HTMLElement;
   private dropdownTextEl: HTMLElement;
-  private categoryBadgeEl: HTMLElement;
   private promptTextEl: HTMLElement;
   private promptPurposeEl: HTMLElement;
   private togglePurposeBtnEl: HTMLElement;
-  private restartBtnEl: HTMLElement;
   private newPromptBtnEl: HTMLElement;
   private copyLinkBtnEl: HTMLElement;
+  private pinBtnEl: HTMLElement;
   private languageSwitcherEl: HTMLElement;
   private themeSwitcherEl: HTMLElement;
   private purposeVisible: boolean = false;
 
   constructor() {
-    this.categorySelectionEl = document.getElementById('category-selection')!;
-    this.promptDisplayEl = document.getElementById('prompt-display')!;
-    this.categoryDropdownEl = document.getElementById('category-dropdown')!;
-    this.dropdownTriggerEl = this.categoryDropdownEl.querySelector('.dropdown-trigger') as HTMLButtonElement;
-    this.dropdownMenuEl = this.categoryDropdownEl.querySelector('.dropdown-menu')!;
-    this.dropdownContentEl = this.categoryDropdownEl.querySelector('.dropdown-content')!;
-    this.dropdownTextEl = this.categoryDropdownEl.querySelector('.dropdown-text')!;
-    this.categoryBadgeEl = document.querySelector('.category-badge')!;
-    this.promptTextEl = document.querySelector('.prompt-text')!;
-    this.promptPurposeEl = document.querySelector('.prompt-purpose')!;
-    this.togglePurposeBtnEl = document.getElementById('toggle-purpose-btn')!;
-    this.restartBtnEl = document.getElementById('restart-btn')!;
-    this.newPromptBtnEl = document.getElementById('new-prompt-btn')!;
-    this.copyLinkBtnEl = document.getElementById('copy-link-btn')!;
-    this.languageSwitcherEl = document.getElementById('language-switcher')!;
-    this.themeSwitcherEl = document.getElementById('theme-switcher')!;
+    try {
+      // Get main elements
+      this.promptDisplayEl = document.getElementById('prompt-display')!;
+      this.categoryDropdownEl = document.getElementById('category-dropdown')!;
+      this.languageSwitcherEl = document.getElementById('language-switcher')!;
+      this.themeSwitcherEl = document.getElementById('theme-switcher')!;
 
-    void this.init();
+      // Verify main elements exist
+      if (!this.promptDisplayEl) {
+        throw new Error('Prompt display element not found');
+      }
+      if (!this.categoryDropdownEl) {
+        throw new Error('Category dropdown element not found');
+      }
+      if (!this.languageSwitcherEl) {
+        throw new Error('Language switcher element not found');
+      }
+      if (!this.themeSwitcherEl) {
+        throw new Error('Theme switcher element not found');
+      }
+
+      // Get dropdown elements
+      this.dropdownTriggerEl = this.categoryDropdownEl.querySelector('.dropdown-trigger') as HTMLButtonElement;
+      this.dropdownMenuEl = this.categoryDropdownEl.querySelector('.dropdown-menu')!;
+      this.dropdownContentEl = this.categoryDropdownEl.querySelector('.dropdown-content')!;
+      this.dropdownTextEl = this.categoryDropdownEl.querySelector('.dropdown-text')!;
+
+      // Verify dropdown elements exist
+      if (!this.dropdownTriggerEl) {
+        throw new Error('Dropdown trigger element not found');
+      }
+      if (!this.dropdownMenuEl) {
+        throw new Error('Dropdown menu element not found');
+      }
+      if (!this.dropdownContentEl) {
+        throw new Error('Dropdown content element not found');
+      }
+      if (!this.dropdownTextEl) {
+        throw new Error('Dropdown text element not found');
+      }
+
+      // Get prompt elements
+      this.promptTextEl = document.querySelector('.prompt-text')!;
+      this.promptPurposeEl = document.querySelector('.prompt-purpose')!;
+
+      // Verify prompt elements exist
+      if (!this.promptTextEl) {
+        throw new Error('Prompt text element not found');
+      }
+      if (!this.promptPurposeEl) {
+        throw new Error('Prompt purpose element not found');
+      }
+
+      // Get button elements
+      this.togglePurposeBtnEl = document.getElementById('toggle-purpose-btn')!;
+      this.newPromptBtnEl = document.getElementById('new-prompt-btn')!;
+      this.copyLinkBtnEl = document.getElementById('copy-link-btn')!;
+      this.pinBtnEl = document.getElementById('pin-btn')!;
+
+      // Verify button elements exist
+      if (!this.togglePurposeBtnEl) {
+        throw new Error('Toggle purpose button element not found');
+      }
+      if (!this.newPromptBtnEl) {
+        throw new Error('New prompt button element not found');
+      }
+      if (!this.copyLinkBtnEl) {
+        throw new Error('Copy link button element not found');
+      }
+      if (!this.pinBtnEl) {
+        throw new Error('Pin button element not found');
+      }
+
+      void this.init();
+    } catch (error) {
+      console.error('Constructor error:', error);
+      document.body.innerHTML = `<div class="error"><h1>Error</h1><p>Failed to initialize app: ${error}</p></div>`;
+    }
   }
 
   private async init(): Promise<void> {
@@ -139,12 +198,18 @@ class JournalPromptsApp {
       this.setupLanguageSwitcher();
       this.setupThemeSwitcher();
       
-      // Ensure prompts are loaded before handling deep links
+      // Ensure prompts are loaded before handling deep links or loading initial prompt
       if (Object.keys(this.categoryGroups).length > 0) {
-        this.handleDeepLink();
+        // Check for deep link first
+        const hasDeepLink = this.handleDeepLink();
+        
+        // If no deep link, load random prompt from any category
+        if (!hasDeepLink) {
+          this.loadRandomPromptFromAnyCategory();
+        }
       } else {
         // eslint-disable-next-line no-console
-        console.warn('No prompts loaded, skipping deep link handling');
+        console.warn('No prompts loaded, cannot initialize app');
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -171,14 +236,16 @@ class JournalPromptsApp {
     // Update page title
     document.title = TranslationManager.get('page.title');
 
-    // Update category selection label
-    const categoryLabel = document.querySelector('.category-label') as HTMLElement;
-    if (categoryLabel) {
-      categoryLabel.innerHTML = TranslationManager.get('categorySelection.label');
+    // Update app title
+    const appTitle = document.querySelector('.app-title') as HTMLElement;
+    if (appTitle) {
+      appTitle.innerHTML = TranslationManager.get('categorySelection.label');
     }
 
-    // Update dropdown placeholder
-    this.updateDropdownPlaceholder();
+    // Update dropdown placeholder only if no category is selected
+    if (!this.currentPrompt) {
+      this.updateDropdownPlaceholder();
+    }
 
     // Update button tooltips
     this.updateButtonTooltips();
@@ -201,9 +268,15 @@ class JournalPromptsApp {
       : TranslationManager.get('buttons.showPurpose');
 
     // Update other button tooltips
-    this.newPromptBtnEl.title = TranslationManager.get('buttons.newPrompt');
+    this.newPromptBtnEl.title = this.isPinned 
+      ? TranslationManager.get('buttons.newPrompt')
+      : 'Get a new prompt from any category';
     this.copyLinkBtnEl.title = TranslationManager.get('buttons.copyLink');
-    this.restartBtnEl.title = TranslationManager.get('buttons.goBack');
+    
+    // Update pin button tooltip
+    this.pinBtnEl.title = this.isPinned 
+      ? 'Unpin category (get prompts from all categories)'
+      : 'Pin this category';
   }
 
   private updateLanguageSwitcherTooltips(): void {
@@ -244,6 +317,7 @@ class JournalPromptsApp {
     this.dropdownTextEl.textContent = category;
     this.closeDropdown();
     this.selectCategory(category);
+    this.setPinned(true); // Auto-pin when selecting a category
   }
 
   private openDropdown(): void {
@@ -272,8 +346,23 @@ class JournalPromptsApp {
     this.displayPrompt(selectedPrompt);
   }
 
-  private selectNewPromptFromSameCategory(): void {
-    if (this.currentCategory) {
+  private loadRandomPromptFromAnyCategory(): void {
+    // Get all prompts from all categories
+    const allPrompts: Prompt[] = [];
+    Object.values(this.categoryGroups).forEach(categoryPrompts => {
+      allPrompts.push(...categoryPrompts);
+    });
+
+    if (allPrompts.length > 0) {
+      const randomPrompt = getRandomPrompt(allPrompts);
+      this.currentCategory = randomPrompt.category;
+      this.displayPrompt(randomPrompt);
+    }
+  }
+
+  private selectNewPrompt(): void {
+    if (this.isPinned && this.currentCategory) {
+      // Get new prompt from current category only
       const prompts = this.categoryGroups[this.currentCategory];
       let newPrompt = getRandomPrompt(prompts);
 
@@ -285,12 +374,29 @@ class JournalPromptsApp {
       }
 
       this.displayPrompt(newPrompt);
+    } else {
+      // Get random prompt from any category
+      this.loadRandomPromptFromAnyCategory();
     }
+  }
+
+  private setPinned(pinned: boolean): void {
+    this.isPinned = pinned;
+    if (pinned) {
+      this.pinBtnEl.classList.add('pinned');
+    } else {
+      this.pinBtnEl.classList.remove('pinned');
+    }
+    this.updateButtonTooltips();
+  }
+
+  private togglePin(): void {
+    this.setPinned(!this.isPinned);
   }
 
   private displayPrompt(prompt: Prompt): void {
     this.currentPrompt = prompt;
-    this.categoryBadgeEl.textContent = prompt.category;
+    this.dropdownTextEl.textContent = prompt.category;
     this.promptTextEl.innerHTML = parseMarkdown(prompt.prompt);
     this.promptPurposeEl.textContent = prompt.purpose;
 
@@ -299,14 +405,8 @@ class JournalPromptsApp {
     this.promptPurposeEl.classList.add('hidden');
     this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
 
-    this.categorySelectionEl.classList.add('hidden');
-    this.promptDisplayEl.classList.remove('hidden');
-
-    // Hide controls when prompt is displayed
-    const controlsContainer = document.querySelector('.controls-container');
-    if (controlsContainer) {
-      controlsContainer.classList.add('hidden-on-prompt');
-    }
+    // Update current category but don't auto-pin unless user selected it
+    this.currentCategory = prompt.category;
 
     this.updateUrl(prompt);
   }
@@ -333,9 +433,9 @@ class JournalPromptsApp {
     });
 
     this.togglePurposeBtnEl.addEventListener('click', () => this.togglePurpose());
-    this.restartBtnEl.addEventListener('click', () => this.showCategorySelection());
-    this.newPromptBtnEl.addEventListener('click', () => this.selectNewPromptFromSameCategory());
+    this.newPromptBtnEl.addEventListener('click', () => this.selectNewPrompt());
     this.copyLinkBtnEl.addEventListener('click', () => void this.copyCurrentLink());
+    this.pinBtnEl.addEventListener('click', () => this.togglePin());
   }
 
   private togglePurpose(): void {
@@ -350,23 +450,6 @@ class JournalPromptsApp {
     }
   }
 
-  private showCategorySelection(): void {
-    this.promptDisplayEl.classList.add('hidden');
-    this.categorySelectionEl.classList.remove('hidden');
-    this.dropdownTextEl.textContent = TranslationManager.get('categorySelection.placeholder');
-    this.closeDropdown();
-    this.currentCategory = '';
-    this.currentPrompt = null;
-
-    // Show controls when returning to category selection
-    const controlsContainer = document.querySelector('.controls-container');
-    if (controlsContainer) {
-      controlsContainer.classList.remove('hidden-on-prompt');
-    }
-
-    // Clear URL parameters
-    window.history.pushState({}, '', window.location.pathname);
-  }
 
   private updateUrl(prompt: Prompt): void {
     const params = new URLSearchParams();
@@ -376,7 +459,7 @@ class JournalPromptsApp {
     window.history.pushState({}, '', newUrl);
   }
 
-  private handleDeepLink(): void {
+  private handleDeepLink(): boolean {
     const params = new URLSearchParams(window.location.search);
     const promptId = params.get('id');
     const category = params.get('category');
@@ -397,7 +480,7 @@ class JournalPromptsApp {
         console.log('Deep link success - Found prompt by ID:', prompt);
         this.currentCategory = prompt.category;
         this.displayPrompt(prompt);
-        return;
+        return true;
       } else {
         // eslint-disable-next-line no-console
         console.warn('Deep link failed - Prompt ID not found:', promptId);
@@ -416,7 +499,7 @@ class JournalPromptsApp {
         console.log('Deep link success - Found prompt by prefix:', matchingPrompt);
         this.currentCategory = category;
         this.displayPrompt(matchingPrompt);
-        return;
+        return true;
       } else {
         // eslint-disable-next-line no-console
         console.warn('Deep link failed - Prompt prefix not found:', decodedPrefix);
@@ -428,16 +511,19 @@ class JournalPromptsApp {
       // eslint-disable-next-line no-console
       console.log('Deep link fallback - Selecting random prompt from category:', category);
       this.selectCategory(category);
-      return;
+      this.setPinned(true); // Pin the category from deep link
+      return true;
     }
 
     // If we get here, the deep link failed completely
     if (promptId || category) {
       // eslint-disable-next-line no-console
-      console.warn('Deep link failed completely - falling back to home page');
-      // Clear invalid URL parameters and stay on home page
+      console.warn('Deep link failed completely - falling back to random prompt');
+      // Clear invalid URL parameters
       window.history.replaceState({}, '', window.location.pathname);
     }
+
+    return false;
   }
 
   private async copyCurrentLink(): Promise<void> {
@@ -554,8 +640,8 @@ class JournalPromptsApp {
             this.togglePurpose();
           }
         } else {
-          // Prompt not found in new language, go back to category selection
-          this.showCategorySelection();
+          // Prompt not found in new language, load random prompt
+          this.loadRandomPromptFromAnyCategory();
         }
       }
 
