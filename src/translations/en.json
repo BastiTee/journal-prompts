@@ -22,6 +22,9 @@
   "messages": {
     "loadError": "Failed to load journal prompts. Please refresh the page.",
     "errorTitle": "Error",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "linkSaved": "Link saved to clipboard",
+    "categoryPinned": "Category pinned",
+    "categoryUnpinned": "Category unpinned"
   }
 }

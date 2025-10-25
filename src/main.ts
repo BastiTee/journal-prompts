@@ -94,6 +94,8 @@ class JournalPromptsApp {
   private pinBtnEl!: HTMLElement;
   private languageSwitcherEl!: HTMLElement;
   private themeSwitcherEl!: HTMLElement;
+  private statusNotificationEl!: HTMLElement;
+  private statusMessageEl!: HTMLElement;
   private purposeVisible: boolean = false;
 
   constructor() {
@@ -103,6 +105,8 @@ class JournalPromptsApp {
       this.categorySelectEl = document.getElementById('category-select')! as HTMLSelectElement;
       this.languageSwitcherEl = document.getElementById('language-switcher')!;
       this.themeSwitcherEl = document.getElementById('theme-switcher')!;
+      this.statusNotificationEl = document.getElementById('status-notification')!;
+      this.statusMessageEl = document.querySelector('.status-message')!;
 
       // Verify main elements exist
       if (!this.promptDisplayEl) {
@@ -116,6 +120,12 @@ class JournalPromptsApp {
       }
       if (!this.themeSwitcherEl) {
         throw new Error('Theme switcher element not found');
+      }
+      if (!this.statusNotificationEl) {
+        throw new Error('Status notification element not found');
+      }
+      if (!this.statusMessageEl) {
+        throw new Error('Status message element not found');
       }
 
       // Get prompt elements
@@ -297,6 +307,7 @@ class JournalPromptsApp {
     if (selectedCategory) {
       this.selectCategory(selectedCategory);
       this.setPinned(true); // Auto-pin when selecting a category
+      this.showStatus(TranslationManager.get('messages.categoryPinned'));
     }
   }
 
@@ -352,7 +363,15 @@ class JournalPromptsApp {
   }
 
   private togglePin(): void {
+    const wasPinned = this.isPinned;
     this.setPinned(!this.isPinned);
+    
+    // Show appropriate status message
+    if (this.isPinned) {
+      this.showStatus(TranslationManager.get('messages.categoryPinned'));
+    } else {
+      this.showStatus(TranslationManager.get('messages.categoryUnpinned'));
+    }
   }
 
   private displayPrompt(prompt: Prompt): void {
@@ -474,13 +493,12 @@ class JournalPromptsApp {
     try {
       await navigator.clipboard.writeText(window.location.href);
 
-      // Show temporary feedback with visual change
-      const originalTitle = this.copyLinkBtnEl.title;
-      this.copyLinkBtnEl.title = TranslationManager.get('messages.copied');
-      this.copyLinkBtnEl.classList.add('copied');
+      // Show status notification
+      this.showStatus(TranslationManager.get('messages.linkSaved'));
 
+      // Show temporary visual feedback on button
+      this.copyLinkBtnEl.classList.add('copied');
       setTimeout(() => {
-        this.copyLinkBtnEl.title = originalTitle;
         this.copyLinkBtnEl.classList.remove('copied');
       }, 1000);
     } catch (error) {
@@ -500,11 +518,13 @@ class JournalPromptsApp {
 
     try {
       document.execCommand('copy');
-      const originalTitle = this.copyLinkBtnEl.title;
-      this.copyLinkBtnEl.title = TranslationManager.get('messages.copied');
+      
+      // Show status notification
+      this.showStatus(TranslationManager.get('messages.linkSaved'));
+
+      // Show temporary visual feedback on button
       this.copyLinkBtnEl.classList.add('copied');
       setTimeout(() => {
-        this.copyLinkBtnEl.title = originalTitle;
         this.copyLinkBtnEl.classList.remove('copied');
       }, 1000);
     } catch (error) {
@@ -653,6 +673,21 @@ class JournalPromptsApp {
       // eslint-disable-next-line no-console
       console.error('Failed to switch theme:', error);
     }
+  }
+
+  private showStatus(message: string): void {
+    // Update status message text
+    this.statusMessageEl.textContent = message;
+    
+    // Show notification
+    this.statusNotificationEl.classList.remove('hidden');
+    this.statusNotificationEl.classList.add('show');
+    
+    // Auto-hide after 2.5 seconds
+    setTimeout(() => {
+      this.statusNotificationEl.classList.remove('show');
+      this.statusNotificationEl.classList.add('hidden');
+    }, 2500);
   }
 
   private showError(message: string): void {

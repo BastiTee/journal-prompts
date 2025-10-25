@@ -22,6 +22,9 @@
   "messages": {
     "loadError": "Fehler beim Laden der Journal-Fragen. Bitte Seite neu laden.",
     "errorTitle": "Fehler",
-    "copied": "Kopiert!"
+    "copied": "Kopiert!",
+    "linkSaved": "Link in Zwischenablage gespeichert",
+    "categoryPinned": "Kategorie angeheftet",
+    "categoryUnpinned": "Kategorie gelöst"
   }
 }
