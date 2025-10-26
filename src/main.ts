@@ -429,9 +429,11 @@ class JournalPromptsApp {
 
     if (this.purposeVisible) {
       this.promptPurposeEl.classList.remove('hidden');
+      this.togglePurposeBtnEl.classList.add('active');
       this.togglePurposeBtnEl.title = TranslationManager.get('buttons.hidePurpose');
     } else {
       this.promptPurposeEl.classList.add('hidden');
+      this.togglePurposeBtnEl.classList.remove('active');
       this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
     }
   }
