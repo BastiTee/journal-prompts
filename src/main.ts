@@ -98,6 +98,9 @@ class JournalPromptsApp {
   private statusNotificationEl!: HTMLElement;
   private statusMessageEl!: HTMLElement;
   private purposeVisible: boolean = false;
+  private settingsVisible: boolean = false;
+  private settingsContainerEl!: HTMLElement;
+  private settingsToggleEl!: HTMLElement;
 
   constructor() {
     try {
@@ -147,6 +150,10 @@ class JournalPromptsApp {
       this.copyLinkBtnEl = document.getElementById('copy-link-btn')!;
       this.pinBtnEl = document.getElementById('pin-btn')!;
 
+      // Get settings elements
+      this.settingsContainerEl = document.querySelector('.settings-container')!;
+      this.settingsToggleEl = document.getElementById('settings-toggle')!;
+
       // Verify button elements exist
       if (!this.togglePurposeBtnEl) {
         throw new Error('Toggle purpose button element not found');
@@ -159,6 +166,14 @@ class JournalPromptsApp {
       }
       if (!this.pinBtnEl) {
         throw new Error('Pin button element not found');
+      }
+
+      // Verify settings elements exist
+      if (!this.settingsContainerEl) {
+        throw new Error('Settings container element not found');
+      }
+      if (!this.settingsToggleEl) {
+        throw new Error('Settings toggle element not found');
       }
 
       // Replace all icons with Lucide icons
@@ -178,6 +193,12 @@ class JournalPromptsApp {
     replaceIcon(this.pinBtnEl, 'pin');
     replaceIcon(this.copyLinkBtnEl, 'link');
     replaceIcon(this.togglePurposeBtnEl, 'question');
+
+    // Replace hamburger menu icon
+    const settingsToggle = document.getElementById('settings-toggle');
+    if (settingsToggle) {
+      replaceIcon(settingsToggle, 'menu');
+    }
 
     // Replace theme switcher icons
     const lightThemeBtn = document.getElementById('theme-light');
@@ -422,6 +443,9 @@ class JournalPromptsApp {
     this.newPromptBtnEl.addEventListener('click', () => this.selectNewPrompt());
     this.copyLinkBtnEl.addEventListener('click', () => void this.copyCurrentLink());
     this.pinBtnEl.addEventListener('click', () => this.togglePin());
+
+    // Setup hamburger menu toggle
+    this.setupSettingsMenu();
   }
 
   private togglePurpose(): void {
@@ -697,6 +721,32 @@ class JournalPromptsApp {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to switch theme:', error);
+    }
+  }
+
+  private setupSettingsMenu(): void {
+    // Initialize settings as hidden
+    this.settingsVisible = false;
+    this.settingsContainerEl.classList.add('settings-hidden');
+    
+    // Add click handler for toggle functionality
+    this.settingsToggleEl.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.toggleSettings();
+    });
+  }
+
+  private toggleSettings(): void {
+    this.settingsVisible = !this.settingsVisible;
+    
+    if (this.settingsVisible) {
+      // Show controls
+      this.settingsContainerEl.classList.remove('settings-hidden');
+      this.settingsToggleEl.classList.add('active');
+    } else {
+      // Hide controls
+      this.settingsContainerEl.classList.add('settings-hidden');
+      this.settingsToggleEl.classList.remove('active');
     }
   }
 
