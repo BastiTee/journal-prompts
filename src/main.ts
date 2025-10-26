@@ -344,6 +344,40 @@ class JournalPromptsApp {
       option.textContent = category;
       this.categorySelectEl.appendChild(option);
     });
+
+    // Force Safari iOS to re-apply text centering after populating options
+    this.forceSafariCenteringRefresh();
+  }
+
+  private forceSafariCenteringRefresh(): void {
+    // Force Safari iOS to re-apply text centering by temporarily changing and restoring styles
+    // This works around Safari's issue where it doesn't re-apply text centering after DOM changes
+    const originalDisplay = this.categorySelectEl.style.display;
+    this.categorySelectEl.style.display = 'none';
+    
+    // Force a reflow
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.categorySelectEl.offsetHeight;
+    
+    // Restore display and trigger another reflow
+    this.categorySelectEl.style.display = originalDisplay;
+    
+    // Additional Safari iOS specific fix: temporarily change text-align
+    const originalTextAlign = this.categorySelectEl.style.textAlign;
+    this.categorySelectEl.style.textAlign = 'left';
+    
+    // Force another reflow
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.categorySelectEl.offsetHeight;
+    
+    // Restore text-align to center (or remove to use CSS)
+    this.categorySelectEl.style.textAlign = originalTextAlign || '';
+    
+    // Final reflow to ensure changes are applied
+    setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      this.categorySelectEl.offsetHeight;
+    }, 0);
   }
 
   private onCategoryChange(): void {
