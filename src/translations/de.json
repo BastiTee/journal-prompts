@@ -1,9 +1,9 @@
 {
   "page": {
-    "title": "Journal-Fragen"
+    "title": "✎ Schreib was"
   },
   "categorySelection": {
-    "label": "Nimm dir Papier und Stift<br>und fang an zu schreiben.",
+    "label": "✎ Schreib was.",
     "placeholder": "Kategorie auswählen..."
   },
   "buttons": {
