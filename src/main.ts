@@ -101,6 +101,7 @@ class JournalPromptsApp {
   private settingsVisible: boolean = false;
   private settingsContainerEl!: HTMLElement;
   private settingsToggleEl!: HTMLElement;
+  private wasOpenedWithDeepLink: boolean = false;
 
   constructor() {
     try {
@@ -471,7 +472,10 @@ class JournalPromptsApp {
     // Update current category but don't auto-pin unless user selected it
     this.currentCategory = prompt.category;
 
-    this.updateUrl(prompt);
+    // Only update URL if this was opened with a deep link
+    if (this.wasOpenedWithDeepLink) {
+      this.updateUrl(prompt);
+    }
   }
 
   private setupEventListeners(): void {
@@ -529,6 +533,7 @@ class JournalPromptsApp {
       if (prompt) {
         // eslint-disable-next-line no-console
         console.log('Deep link success - Found prompt by ID:', prompt);
+        this.wasOpenedWithDeepLink = true;
         this.currentCategory = prompt.category;
         this.displayPrompt(prompt);
         return true;
@@ -548,6 +553,7 @@ class JournalPromptsApp {
       if (matchingPrompt) {
         // eslint-disable-next-line no-console
         console.log('Deep link success - Found prompt by prefix:', matchingPrompt);
+        this.wasOpenedWithDeepLink = true;
         this.currentCategory = category;
         this.displayPrompt(matchingPrompt);
         return true;
@@ -561,6 +567,7 @@ class JournalPromptsApp {
     if (category && this.categoryGroups[category]) {
       // eslint-disable-next-line no-console
       console.log('Deep link fallback - Selecting random prompt from category:', category);
+      this.wasOpenedWithDeepLink = true;
       this.selectCategory(category);
       this.setPinned(true); // Pin the category from deep link
       return true;
@@ -579,6 +586,11 @@ class JournalPromptsApp {
 
   private async copyCurrentLink(): Promise<void> {
     try {
+      // If URL is clean (no ID parameter), add current prompt ID first
+      if (!this.wasOpenedWithDeepLink && this.currentPrompt) {
+        this.updateUrl(this.currentPrompt);
+      }
+
       await navigator.clipboard.writeText(window.location.href);
 
       // Show status notification
@@ -598,6 +610,11 @@ class JournalPromptsApp {
   }
 
   private fallbackCopyLink(): void {
+    // If URL is clean (no ID parameter), add current prompt ID first
+    if (!this.wasOpenedWithDeepLink && this.currentPrompt) {
+      this.updateUrl(this.currentPrompt);
+    }
+
     const textArea = document.createElement('textarea');
     textArea.value = window.location.href;
     document.body.appendChild(textArea);
@@ -606,7 +623,7 @@ class JournalPromptsApp {
 
     try {
       document.execCommand('copy');
-      
+
       // Show status notification
       this.showStatus(TranslationManager.get('messages.linkSaved'));
 
