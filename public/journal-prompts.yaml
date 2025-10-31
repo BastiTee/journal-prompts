@@ -1,6 +1,35 @@
+categories:
+  - id: B
+    translations:
+      en: Biography
+      de: Biografie
+  - id: CA
+    translations:
+      en: Changing Inner Attitude
+      de: Innere Einstellung ändern
+  - id: CM
+    translations:
+      en: Changing Mood
+      de: Stimmung ändern
+  - id: DR
+    translations:
+      en: Daily Reflection
+      de: Tägliche Reflexion
+  - id: G
+    translations:
+      en: Gratitude
+      de: Dankbarkeit
+  - id: MP
+    translations:
+      en: Morning Pages
+      de: Morgenseiten
+  - id: PD
+    translations:
+      en: Personal Development
+      de: Persönlichkeitsentwicklung
 prompts:
-  - id: B1
-    category: Biography
+  - id: 1
+    category_id: B
     translations:
       en:
         prompt: Describe a moment that changed the direction of your life. What led up to it, and how did it shape who you are now?
@@ -8,8 +37,8 @@ prompts:
       de:
         prompt: Beschreibe einen Moment, der die Richtung deines Lebens verändert hat. Was führte dazu und wie hat er dich verändert?
         purpose: Reflektiere über entscheidende Lebensmomente, um persönliche Transformation besser zu verstehen.
-  - id: B2
-    category: Biography
+  - id: 2
+    category_id: B
     translations:
       en:
         prompt: Start with *„I remember...”* and explore one of your memories.
@@ -17,19 +46,17 @@ prompts:
       de:
         prompt: Beginne mit *„Ich erinnere mich...”* und erkunde eine deiner Erinnerungen.
         purpose: Erlebe dein eigenes Leben neu.
-  - id: B3
-    category: Biography
+  - id: 3
+    category_id: B
     translations:
       en:
-        prompt: |-
-          What is a core memory from your childhood that you still carry with you
-          today? What does it reveal about you?
+        prompt: What is a core memory from your childhood that you still carry with you today? What does it reveal about you?
         purpose: Explore the long-term emotional impact of formative experiences.
       de:
         prompt: Beschreibe eine wichtige Erinnerung aus deiner Kindheit, die du heute noch mit dir trägst? Was verrät sie über dich?
         purpose: Erkunde die langfristige emotionale Wirkung prägender Erfahrungen.
-  - id: B4
-    category: Biography
+  - id: 4
+    category_id: B
     translations:
       en:
         prompt: If you had one minute to describe yourself to a stranger, what would you say?
@@ -37,8 +64,8 @@ prompts:
       de:
         prompt: Was würdest du sagen, wenn du eine Minute hättest, um dich einem Fremden vorzustellen?
         purpose: Erkunde, wie du über dich selbst denkst. Mache eine persönliche Momentaufnahme.
-  - id: B5
-    category: Biography
+  - id: 5
+    category_id: B
     translations:
       en:
         prompt: Write the last dream you remember (even if fuzzy).
@@ -46,8 +73,8 @@ prompts:
       de:
         prompt: Schreibe den letzten Traum auf, an den du dich erinnerst (auch wenn er verschwommen ist).
         purpose: Erlebe deine eigenen Erinnerungen neu.
-  - id: CA1
-    category: Changing Inner Attitude
+  - id: 1
+    category_id: CA
     translations:
       en:
         prompt: |-
@@ -59,8 +86,8 @@ prompts:
           Stelle dir eine *„Etwas ist so, wie es ist, weil...“* Frage. Zum Beispiel:
           *„Ich bin ein gesunder Mensch, weil...“*
         purpose: Sammle Beweise, die eine innere Einstellung oder Tatsache unterstützen.
-  - id: CA2
-    category: Changing Inner Attitude
+  - id: 2
+    category_id: CA
     translations:
       en:
         prompt: How is *something* the best thing that ever happened to you?
@@ -68,8 +95,8 @@ prompts:
       de:
         prompt: Denke an *etwas Negatives*, das du kürzlich erlebt hast. Warum ist *dieses Erlebnis* das Beste, was dir je passiert ist?
         purpose: Verstehe, wie wir Dinge anders betrachten können.
-  - id: CA3
-    category: Changing Inner Attitude
+  - id: 3
+    category_id: CA
     translations:
       en:
         prompt: How would *something* be if it were fun for you?
@@ -77,8 +104,8 @@ prompts:
       de:
         prompt: Denke an *etwas*, das dir gerade schwer fällt. Wie wäre *diese Sache*, wenn sie dir Spaß machen würde?
         purpose: Verstehe, wie wir Dinge anders betrachten können.
-  - id: CA4
-    category: Changing Inner Attitude
+  - id: 4
+    category_id: CA
     translations:
       en:
         prompt: |-
@@ -88,8 +115,8 @@ prompts:
       de:
         prompt: Formuliere eine aktuelle Sorge als Chance um. Wie könnte diese Situation dich voranbringen oder stärken?
         purpose: Übe kognitive Umformulierung, um die Perspektive zu wechseln und Widerstandsfähigkeit zu fördern.
-  - id: CA5
-    category: Changing Inner Attitude
+  - id: 5
+    category_id: CA
     translations:
       en:
         prompt: |-
@@ -99,8 +126,8 @@ prompts:
       de:
         prompt: Schreibe einen optimistischen Brief an dein zukünftiges Ich. Woran soll es sich vom heutigen Tag erinnern?
         purpose: Fördere Selbstmitgefühl und Vertrauen in den Weg, den du gehst.
-  - id: CA6
-    category: Changing Inner Attitude
+  - id: 6
+    category_id: CA
     translations:
       en:
         prompt: When do you feel most creative, and how can you make more space for that in your life?
@@ -108,8 +135,8 @@ prompts:
       de:
         prompt: Wann fühlst du dich am kreativsten? Wie kannst du mehr Raum dafür in deinem Leben schaffen?
         purpose: Ermutigt zur Erkundung von Bedingungen, die Inspiration und Flow fördern.
-  - id: CM1
-    category: Changing Mood
+  - id: 1
+    category_id: CM
     translations:
       en:
         prompt: How could you make someone else happy? Write 5-10 bullet points.
@@ -117,8 +144,8 @@ prompts:
       de:
         prompt: Wie könntest du jemanden anderen glücklich machen? Schreibe 5-10 Stichpunkte.
         purpose: Konzentriere dich auf jemand anderen als dich selbst.
-  - id: CM2
-    category: Changing Mood
+  - id: 2
+    category_id: CM
     translations:
       en:
         prompt: |-
@@ -128,8 +155,8 @@ prompts:
       de:
         prompt: Liste fünf Dinge auf, die du jetzt gleich tun könntest, um deine Stimmung zu verbessern oder dich zu beruhigen.
         purpose: Ermutige proaktive Selbstregulation und emotionale Bewusstheit.
-  - id: CM3
-    category: Changing Mood
+  - id: 3
+    category_id: CM
     translations:
       en:
         prompt: Try to imagine six impossible things.
@@ -137,8 +164,8 @@ prompts:
       de:
         prompt: Versuche dir sechs unmögliche Dinge vorzustellen.
         purpose: Wechsle in einen kreativen, entspannten Modus.
-  - id: CM4
-    category: Changing Mood
+  - id: 4
+    category_id: CM
     translations:
       en:
         prompt: |-
@@ -148,8 +175,8 @@ prompts:
       de:
         prompt: Was ist etwas in deiner Umgebung, das du vorher noch nicht bemerkt hast? Schreibe 5-10 Stichpunkte.
         purpose: Konzentriere dich auf die Gegenwart statt auf Vergangenheit oder Zukunft.
-  - id: CM5
-    category: Changing Mood
+  - id: 5
+    category_id: CM
     translations:
       en:
         prompt: Name three colors you see right now.
@@ -157,8 +184,8 @@ prompts:
       de:
         prompt: Benenne drei Farben, die du gerade siehst.
         purpose: Wechsle in einen kreativen, entspannten Modus.
-  - id: CM6
-    category: Changing Mood
+  - id: 6
+    category_id: CM
     translations:
       en:
         prompt: Name a book that changed you, but describe it in one sentence.
@@ -166,8 +193,8 @@ prompts:
       de:
         prompt: Nenne ein Buch, das dich verändert hat, aber beschreibe es in einem Satz.
         purpose: Wechsle in einen kreativen, entspannten Modus.
-  - id: DR1
-    category: Daily Reflection
+  - id: 1
+    category_id: DR
     translations:
       en:
         prompt: What did you learn about yourself today?
@@ -175,8 +202,8 @@ prompts:
       de:
         prompt: Was hast du heute über dich selbst gelernt?
         purpose: Decke Tendenzen und innere Einstellungen auf. Verarbeite und kategorisiere Erfahrungen.
-  - id: DR2
-    category: Daily Reflection
+  - id: 2
+    category_id: DR
     translations:
       en:
         prompt: What did you learn today?
@@ -184,8 +211,8 @@ prompts:
       de:
         prompt: Was hast du heute gelernt, was du gestern noch nicht wusstest?
         purpose: Decke Tendenzen und innere Einstellungen auf. Verarbeite und kategorisiere Erfahrungen.
-  - id: DR3
-    category: Daily Reflection
+  - id: 3
+    category_id: DR
     translations:
       en:
         prompt: What has drained your energy today?
@@ -193,8 +220,8 @@ prompts:
       de:
         prompt: Was hat dir heute deine Energie geraubt?
         purpose: Decke Tendenzen und innere Einstellungen auf. Verarbeite und kategorisiere Erfahrungen.
-  - id: DR4
-    category: Daily Reflection
+  - id: 4
+    category_id: DR
     translations:
       en:
         prompt: What is something that excited you today?
@@ -202,8 +229,8 @@ prompts:
       de:
         prompt: Was hat dich heute begeistert?
         purpose: Decke Tendenzen und innere Einstellungen auf. Verarbeite und kategorisiere Erfahrungen.
-  - id: G1
-    category: Gratitude
+  - id: 1
+    category_id: G
     translations:
       en:
         prompt: |-
@@ -213,8 +240,8 @@ prompts:
       de:
         prompt: Denke an eine Herausforderung, die du kürzlich überwunden hast. Was hat sie mit dir gemacht?
         purpose: Kultiviere Wertschätzung für Wachstum durch Schwierigkeiten.
-  - id: G2
-    category: Gratitude
+  - id: 2
+    category_id: G
     translations:
       en:
         prompt: What are you grateful for?
@@ -222,8 +249,8 @@ prompts:
       de:
         prompt: Wofür bist du dankbar?
         purpose: Entwickle positive Gedanken und Einstellungen.
-  - id: G3
-    category: Gratitude
+  - id: 3
+    category_id: G
     translations:
       en:
         prompt: What is something small or ordinary that consistently brings you joy?
@@ -231,8 +258,8 @@ prompts:
       de:
         prompt: Was ist etwas Kleines oder Gewöhnliches, das dir beständig Freude bereitet?
         purpose: Trainiere die Aufmerksamkeit auf alltägliche Quellen des Glücks.
-  - id: G4
-    category: Gratitude
+  - id: 4
+    category_id: G
     translations:
       en:
         prompt: What terrible things did *not* happen to you today?
@@ -240,8 +267,8 @@ prompts:
       de:
         prompt: Welche schrecklichen Dinge sind dir heute *nicht* passiert?
         purpose: Entwickle positive Gedanken und Einstellungen.
-  - id: G5
-    category: Gratitude
+  - id: 5
+    category_id: G
     translations:
       en:
         prompt: Write down three great things that happened today.
@@ -249,8 +276,8 @@ prompts:
       de:
         prompt: Schreibe drei großartige Dinge auf, die heute passiert sind.
         purpose: Entwickle positive Gedanken und Einstellungen.
-  - id: G6
-    category: Gratitude
+  - id: 6
+    category_id: G
     translations:
       en:
         prompt: Imagine yourself five years from now. What would you thank your present self for doing today?
@@ -258,8 +285,8 @@ prompts:
       de:
         prompt: Stelle dir vor, du bist fünf Jahre in der Zukunft. Wofür würdest du deinem heutigen Ich danken, was es heute getan hat?
         purpose: Ermutigt zu bewusster Entscheidungsfindung und langfristiger Zukunftsplanung.
-  - id: MP1
-    category: Morning Pages
+  - id: 1
+    category_id: MP
     translations:
       en:
         prompt: |-
@@ -269,8 +296,8 @@ prompts:
       de:
         prompt: Fange an zu schreiben. Schreibe alles, was dir in den Sinn kommt. Zeichne, wenn du willst. Höre nicht auf. Fange nicht an zu korrigieren. Halte deine Hände in Bewegung.
         purpose: Erlaube deinem Geist, sich von Gedanken zu befreien und Klarheit zu gewinnen.
-  - id: MP2
-    category: Morning Pages
+  - id: 2
+    category_id: MP
     translations:
       en:
         prompt: What do you wish for today?
@@ -278,8 +305,8 @@ prompts:
       de:
         prompt: Was wünschst du dir für heute?
         purpose: Erkenne, was momentan wichtig ist.
-  - id: MP3
-    category: Morning Pages
+  - id: 3
+    category_id: MP
     translations:
       en:
         prompt: What would make this day great?
@@ -287,8 +314,8 @@ prompts:
       de:
         prompt: Was würde diesen Tag großartig machen?
         purpose: Entfessle deine Kreativität und gewinne Klarheit für deinen Tag.
-  - id: PD1
-    category: Personal Development
+  - id: 1
+    category_id: PD
     translations:
       en:
         prompt: |-
@@ -324,35 +351,8 @@ prompts:
 
           * Erfüllung und innerem Frieden
         purpose: Erkenne, dass es keinen perfekten Weg gibt und alle unsere Entscheidungen Kompromisse beinhalten.
-  - id: PD10
-    category: Personal Development
-    translations:
-      en:
-        prompt: What belief about yourself has changed in the past year, and what caused that shift?
-        purpose: Encourages awareness of evolving self-perceptions and cognitive growth.
-      de:
-        prompt: Welche Überzeugung über dich selbst hat sich im letzten Jahr verändert? Was hat diese Veränderung ausgelöst?
-        purpose: Fördert das Bewusstsein für sich entwickelnde Selbstwahrnehmungen und kognitives Wachstum.
-  - id: PD11
-    category: Personal Development
-    translations:
-      en:
-        prompt: What is something you once thought you couldn't do but proved yourself wrong about?
-        purpose: Builds confidence by recognizing moments of resilience and capability.
-      de:
-        prompt: Was ist etwas, von dem du früher dachtest, du könntest es nicht, aber dann das Gegenteil bewiesen hast?
-        purpose: Stärkt das Selbstvertrauen durch das Erkennen von Momenten der Widerstandsfähigkeit und Fähigkeit.
-  - id: PD12
-    category: Personal Development
-    translations:
-      en:
-        prompt: If you could dedicate your life to solving one problem, what would it be and why?
-        purpose: Clarifies values and sense of mission by connecting to a larger purpose.
-      de:
-        prompt: Wenn du dein Leben der Lösung eines Problems widmen könntest, welches wäre es und warum?
-        purpose: Klärt Werte und Sinn für eine Mission durch Verbindung zu einem größeren Zweck.
-  - id: PD2
-    category: Personal Development
+  - id: 2
+    category_id: PD
     translations:
       en:
         prompt: If you knew you couldn't fail, what would you do next?
@@ -360,8 +360,8 @@ prompts:
       de:
         prompt: Wenn du wüsstest, dass du nicht scheitern kannst, was würdest du als nächstes tun?
         purpose: Erkenne, was momentan wichtig ist.
-  - id: PD3
-    category: Personal Development
+  - id: 3
+    category_id: PD
     translations:
       en:
         prompt: |-
@@ -371,8 +371,8 @@ prompts:
       de:
         prompt: Stelle dir vor, ein Freund hält eine Trauerrede bei deiner Beerdigung. Was hoffst du, dass gesagt werden?
         purpose: Erkenne, was momentan wichtig ist.
-  - id: PD4
-    category: Personal Development
+  - id: 4
+    category_id: PD
     translations:
       en:
         prompt: |-
@@ -382,8 +382,8 @@ prompts:
       de:
         prompt: Was sind die fünf wichtigsten Dinge, die dir an deiner aktuellen Situation/Arbeit/Beziehung am besten gefallen?
         purpose: Erkenne, was momentan wichtig ist.
-  - id: PD5
-    category: Personal Development
+  - id: 5
+    category_id: PD
     translations:
       en:
         prompt: |-
@@ -395,8 +395,8 @@ prompts:
           Was hast du dir vor 5 Jahren gewünscht?
           (Denke an Kategorien wie Familie, Arbeit, Gesundheit, etc.)
         purpose: Erkenne, dass sich Wünsche mit der Zeit ändern können, aber manche Dinge konstant bleiben.
-  - id: PD6
-    category: Personal Development
+  - id: 6
+    category_id: PD
     translations:
       en:
         prompt: What do you think you will wish for in 5 years?
@@ -404,8 +404,8 @@ prompts:
       de:
         prompt: Was denkst du, wirst du dir in 5 Jahren wünschen?
         purpose: Erkenne, was momentan wichtig ist.
-  - id: PD7
-    category: Personal Development
+  - id: 7
+    category_id: PD
     translations:
       en:
         prompt: |-
@@ -415,8 +415,8 @@ prompts:
       de:
         prompt: Welche Werte hältst du im Leben für am wichtigsten (Ehrlichkeit, Gerechtigkeit, Loyalität, etc.)? Wie stimmen deine Handlungen mit diesen Werten überein?
         purpose: Erkunde deine Persönlichkeitsmerkmale und wer du als Person bist.
-  - id: PD8
-    category: Personal Development
+  - id: 8
+    category_id: PD
     translations:
       en:
         prompt: What would improve or worsen if everyone in the world were like you?
@@ -424,8 +424,8 @@ prompts:
       de:
         prompt: Was würde sich verbessern oder verschlechtern, wenn alle Menschen auf der Welt wie du wären?
         purpose: Verstehe deine eigenen Stärken und Schwächen.
-  - id: PD9
-    category: Personal Development
+  - id: 9
+    category_id: PD
     translations:
       en:
         prompt: |-
@@ -447,3 +447,30 @@ prompts:
 
           Zusätzlich kannst du Aktivitäten aufschreiben, die die positiven Belege weiter stützen oder die negativen Belege in der Zukunft verhindern werden.
         purpose: Erkenne, ob du auf dem Weg zu deinen Zielen bist und was dich zurückhalten könnte.
+  - id: 10
+    category_id: PD
+    translations:
+      en:
+        prompt: What belief about yourself has changed in the past year, and what caused that shift?
+        purpose: Encourages awareness of evolving self-perceptions and cognitive growth.
+      de:
+        prompt: Welche Überzeugung über dich selbst hat sich im letzten Jahr verändert? Was hat diese Veränderung ausgelöst?
+        purpose: Fördert das Bewusstsein für sich entwickelnde Selbstwahrnehmungen und kognitives Wachstum.
+  - id: 11
+    category_id: PD
+    translations:
+      en:
+        prompt: What is something you once thought you couldn't do but proved yourself wrong about?
+        purpose: Builds confidence by recognizing moments of resilience and capability.
+      de:
+        prompt: Was ist etwas, von dem du früher dachtest, du könntest es nicht, aber dann das Gegenteil bewiesen hast?
+        purpose: Stärkt das Selbstvertrauen durch das Erkennen von Momenten der Widerstandsfähigkeit und Fähigkeit.
+  - id: 12
+    category_id: PD
+    translations:
+      en:
+        prompt: If you could dedicate your life to solving one problem, what would it be and why?
+        purpose: Clarifies values and sense of mission by connecting to a larger purpose.
+      de:
+        prompt: Wenn du dein Leben der Lösung eines Problems widmen könntest, welches wäre es und warum?
+        purpose: Klärt Werte und Sinn für eine Mission durch Verbindung zu einem größeren Zweck.

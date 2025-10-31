@@ -1,6 +1,6 @@
 import * as yaml from 'js-yaml';
 import { marked } from 'marked';
-import { Prompt, CategoryGroup, PromptsData } from './types.ts';
+import { Prompt, CategoryGroup, PromptsData, Category } from './types.ts';
 
 // Configure marked for safe HTML rendering
 marked.setOptions({
@@ -36,38 +36,54 @@ async function loadPromptsFromUnified(language: string): Promise<CategoryGroup> 
   const yamlText = await response.text();
   const data = yaml.load(yamlText) as PromptsData;
 
-  if (!data || !data.prompts || !Array.isArray(data.prompts)) {
-    throw new Error('Invalid prompts data structure');
+  if (!data || !data.prompts || !Array.isArray(data.prompts) || !data.categories || !Array.isArray(data.categories)) {
+    throw new Error('Invalid prompts data structure - missing prompts or categories');
   }
 
   const prompts: Prompt[] = [];
   const languageCode = language.toLowerCase();
 
+  // Create category lookup map
+  const categoryMap = new Map<string, Category>();
+  data.categories.forEach(category => {
+    categoryMap.set(category.id, category);
+  });
+
   for (const multiPrompt of data.prompts) {
     const translation = multiPrompt.translations[languageCode];
+    const category = categoryMap.get(multiPrompt.category_id);
+
+    if (!category) {
+      // eslint-disable-next-line no-console
+      console.warn(`Category not found for ID ${multiPrompt.category_id}, skipping prompt ${multiPrompt.id}`);
+      continue;
+    }
+
+    // Get category name in requested language with fallback to English
+    const categoryName = category.translations[languageCode] || category.translations.en || multiPrompt.category_id;
 
     if (!translation) {
       // Fallback to English if requested language not available
       const fallbackTranslation = multiPrompt.translations.en;
       if (fallbackTranslation) {
         // eslint-disable-next-line no-console
-        console.warn(`Missing ${language} translation for prompt ${multiPrompt.id}, using English fallback`);
+        console.warn(`Missing ${language} translation for prompt ${multiPrompt.category_id}${multiPrompt.id}, using English fallback`);
         prompts.push({
-          id: multiPrompt.id,
-          category: multiPrompt.category,
+          id: `${multiPrompt.category_id}${multiPrompt.id}`, // Reconstruct combined ID for compatibility
+          category: categoryName,
           prompt: fallbackTranslation.prompt.trim(),
           purpose: fallbackTranslation.purpose.trim(),
         });
       } else {
         // eslint-disable-next-line no-console
-        console.warn(`No translation available for prompt ${multiPrompt.id}, skipping`);
+        console.warn(`No translation available for prompt ${multiPrompt.category_id}${multiPrompt.id}, skipping`);
       }
       continue;
     }
 
     prompts.push({
-      id: multiPrompt.id,
-      category: multiPrompt.category,
+      id: `${multiPrompt.category_id}${multiPrompt.id}`, // Reconstruct combined ID for compatibility
+      category: categoryName,
       prompt: translation.prompt.trim(),
       purpose: translation.purpose.trim(),
     });

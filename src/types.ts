@@ -15,14 +15,24 @@ export interface PromptTranslation {
   purpose: string;
 }
 
-export interface MultilingualPrompt {
+export interface CategoryTranslation {
+  [languageCode: string]: string;
+}
+
+export interface Category {
   id: string;
-  category: string;
+  translations: CategoryTranslation;
+}
+
+export interface MultilingualPrompt {
+  id: number;
+  category_id: string;
   translations: {
     [languageCode: string]: PromptTranslation;
   };
 }
 
 export interface PromptsData {
+  categories: Category[];
   prompts: MultilingualPrompt[];
 }
