@@ -7,17 +7,17 @@
     "placeholder": "Kategorie auswählen..."
   },
   "buttons": {
-    "showPurpose": "Zweck dieser Frage anzeigen.",
-    "hidePurpose": "Zweck dieser Frage verbergen.",
-    "newPrompt": "Neue Fragen aussuchen.",
-    "newPromptFromAnyCategory": "Neue Frage aus beliebiger Kategorie.",
-    "copyLink": "Link zu dieser Frage kopieren.",
+    "showPurpose": "Zweck dieser Frage anzeigen (S).",
+    "hidePurpose": "Zweck dieser Frage verbergen (S).",
+    "newPrompt": "Neue Fragen aussuchen (R).",
+    "newPromptFromAnyCategory": "Neue Frage aus beliebiger Kategorie (R).",
+    "copyLink": "Link zu dieser Frage kopieren (L).",
     "switchToEnglish": "Zu Englisch wechseln.",
     "switchToGerman": "Zu Deutsch wechseln.",
     "switchToLight": "Zu hellem Modus wechseln.",
     "switchToDark": "Zu dunklem Modus wechseln.",
-    "pinCategory": "Diese Kategorie anheften.",
-    "unpinCategory": "Kategorie lösen (Fragen aus allen Kategorien)."
+    "pinCategory": "Diese Kategorie anheften (P).",
+    "unpinCategory": "Kategorie lösen (Fragen aus allen Kategorien) (P)."
   },
   "messages": {
     "loadError": "Fehler beim Laden der Journal-Fragen. Bitte Seite neu laden.",

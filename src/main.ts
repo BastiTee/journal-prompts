@@ -110,6 +110,7 @@ class JournalPromptsApp {
       this.setupEventListeners();
       this.setupLanguageSwitcher();
       this.setupThemeSwitcher();
+      this.setupKeyboardShortcuts();
       
       // Ensure prompts are loaded before handling deep links or loading initial prompt
       if (Object.keys(this.categoryGroups).length > 0) {
@@ -652,11 +653,47 @@ class JournalPromptsApp {
     // Initialize settings as hidden
     this.settingsVisible = false;
     this.settingsContainerEl.classList.add('settings-hidden');
-    
+
     // Add click handler for toggle functionality
     this.settingsToggleEl.addEventListener('click', (e) => {
       e.preventDefault();
       this.toggleSettings();
+    });
+  }
+
+  private setupKeyboardShortcuts(): void {
+    document.addEventListener('keydown', (event) => {
+      // Prevent shortcuts when typing in inputs
+      if (event.target instanceof HTMLInputElement ||
+          event.target instanceof HTMLTextAreaElement ||
+          event.target instanceof HTMLSelectElement) {
+        return;
+      }
+
+      // Prevent shortcuts with modifier keys (Ctrl, Alt, Meta)
+      if (event.ctrlKey || event.altKey || event.metaKey) {
+        return;
+      }
+
+      const key = event.key.toLowerCase();
+      switch (key) {
+        case 'r':
+          event.preventDefault();
+          this.selectNewPrompt();
+          break;
+        case 'p':
+          event.preventDefault();
+          this.togglePin();
+          break;
+        case 'l':
+          event.preventDefault();
+          void this.copyCurrentLink();
+          break;
+        case 's':
+          event.preventDefault();
+          this.togglePurpose();
+          break;
+      }
     });
   }
 

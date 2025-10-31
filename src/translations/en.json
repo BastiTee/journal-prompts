@@ -7,17 +7,17 @@
     "placeholder": "Select a category..."
   },
   "buttons": {
-    "showPurpose": "Show the purpose of this question.",
-    "hidePurpose": "Hide the purpose of this question.",
-    "newPrompt": "Get a new question.",
-    "newPromptFromAnyCategory": "Get a new question from any category.",
-    "copyLink": "Copy link to this question.",
+    "showPurpose": "Show the purpose of this question (S).",
+    "hidePurpose": "Hide the purpose of this question (S).",
+    "newPrompt": "Get a new question (R).",
+    "newPromptFromAnyCategory": "Get a new question from any category (R).",
+    "copyLink": "Copy link to this question (L).",
     "switchToEnglish": "Switch to English.",
     "switchToGerman": "Switch to German.",
     "switchToLight": "Switch to light mode.",
     "switchToDark": "Switch to dark mode.",
-    "pinCategory": "Pin this category.",
-    "unpinCategory": "Unpin category (get questions from all categories)."
+    "pinCategory": "Pin this category (P).",
+    "unpinCategory": "Unpin category (get questions from all categories) (P)."
   },
   "messages": {
     "loadError": "Failed to load journal questions. Please refresh the page.",
