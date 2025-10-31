@@ -146,6 +146,7 @@ class JournalPromptsApp {
     SettingsManager.setTheme(this.currentTheme);
   }
 
+
   private async initializeTranslations(): Promise<void> {
     await TranslationManager.initialize(this.currentLanguage);
   }
@@ -324,10 +325,8 @@ class JournalPromptsApp {
     this.promptTextEl.innerHTML = parseMarkdown(prompt.prompt);
     this.promptPurposeEl.textContent = prompt.purpose;
 
-    // Reset purpose visibility
-    this.purposeVisible = false;
-    this.promptPurposeEl.classList.add(CSS_CLASSES.HIDDEN);
-    this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
+    // Apply the user's purpose visibility preference instead of resetting to false
+    this.updatePurposeDisplay();
 
     // Update current category but don't auto-pin unless user selected it
     this.currentCategory = prompt.category;
@@ -351,9 +350,7 @@ class JournalPromptsApp {
     this.setupSettingsMenu();
   }
 
-  private togglePurpose(): void {
-    this.purposeVisible = !this.purposeVisible;
-
+  private updatePurposeDisplay(): void {
     if (this.purposeVisible) {
       this.promptPurposeEl.classList.remove(CSS_CLASSES.HIDDEN);
       this.togglePurposeBtnEl.classList.add(CSS_CLASSES.ACTIVE);
@@ -363,6 +360,11 @@ class JournalPromptsApp {
       this.togglePurposeBtnEl.classList.remove(CSS_CLASSES.ACTIVE);
       this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
     }
+  }
+
+  private togglePurpose(): void {
+    this.purposeVisible = !this.purposeVisible;
+    this.updatePurposeDisplay();
   }
 
 
