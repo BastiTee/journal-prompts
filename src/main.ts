@@ -776,9 +776,11 @@ class JournalPromptsApp {
     if (this.settingsVisible) {
       // Show controls
       this.settingsContainerEl.classList.remove('settings-hidden');
+      this.settingsContainerEl.classList.add('settings-visible');
       this.settingsToggleEl.classList.add('active');
     } else {
       // Hide controls
+      this.settingsContainerEl.classList.remove('settings-visible');
       this.settingsContainerEl.classList.add('settings-hidden');
       this.settingsToggleEl.classList.remove('active');
     }

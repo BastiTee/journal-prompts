@@ -781,19 +781,26 @@ main {
   z-index: var(--z-controls);
 }
 
-/* Hide settings controls by default */
+/* Hide settings controls by default - prevents FOUC */
 .settings-container .theme-switcher,
 .settings-container .language-switcher {
+  display: none;
+}
+
+/* Show settings controls only when they should be visible */
+.settings-container.settings-visible .theme-switcher,
+.settings-container.settings-visible .language-switcher {
+  display: flex;
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
   transition: all 0.3s ease;
 }
 
+/* Keep settings hidden when explicitly hidden */
 .settings-container.settings-hidden .theme-switcher,
 .settings-container.settings-hidden .language-switcher {
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
+  display: none;
 }
 
 /* Settings Toggle Button - Minimal Style */
