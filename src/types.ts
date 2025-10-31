@@ -9,12 +9,29 @@ export interface CategoryGroup {
   [category: string]: Prompt[];
 }
 
-// New interfaces for multilingual structure
+// New interfaces for ultra-clean multilingual structure
 export interface PromptTranslation {
   prompt: string;
   purpose: string;
 }
 
+export interface CleanPrompt {
+  id: number;
+  [languageCode: string]: PromptTranslation | number;
+}
+
+export interface CleanCategory {
+  [languageCode: string]: string | CleanPrompt[];
+  prompts: CleanPrompt[];
+}
+
+export interface CleanPromptsData {
+  categories: {
+    [categoryId: string]: CleanCategory;
+  };
+}
+
+// Legacy interfaces for backward compatibility
 export interface CategoryTranslation {
   [languageCode: string]: string;
 }

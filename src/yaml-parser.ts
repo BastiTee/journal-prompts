@@ -1,6 +1,6 @@
 import * as yaml from 'js-yaml';
 import { marked } from 'marked';
-import { Prompt, CategoryGroup, PromptsData, Category } from './types.ts';
+import { Prompt, CategoryGroup, PromptsData, Category, CleanPromptsData } from './types.ts';
 
 // Configure marked for safe HTML rendering
 marked.setOptions({
@@ -34,10 +34,89 @@ async function loadPromptsFromUnified(language: string): Promise<CategoryGroup> 
   }
 
   const yamlText = await response.text();
+
+  // Try to load as clean structure first
+  try {
+    return await loadPromptsFromCleanStructure(yamlText, language);
+  } catch (cleanError) {
+    // eslint-disable-next-line no-console
+    console.warn('Failed to load clean structure, trying nested format:', cleanError);
+
+    // Fallback to nested structure
+    return await loadPromptsFromNestedStructure(yamlText, language);
+  }
+}
+
+async function loadPromptsFromCleanStructure(yamlText: string, language: string): Promise<CategoryGroup> {
+  const data = yaml.load(yamlText) as CleanPromptsData;
+
+  if (!data || !data.categories || typeof data.categories !== 'object') {
+    throw new Error('Invalid clean prompts data structure - missing categories');
+  }
+
+  const prompts: Prompt[] = [];
+  const languageCode = language.toLowerCase();
+
+  // Process each category
+  for (const [categoryId, category] of Object.entries(data.categories)) {
+    if (!category.prompts || !Array.isArray(category.prompts)) {
+      // eslint-disable-next-line no-console
+      console.warn(`Category ${categoryId} missing prompts array, skipping`);
+      continue;
+    }
+
+    // Get category name in requested language with fallback to English
+    const categoryName = (category[languageCode] as string) || (category.en as string) || categoryId;
+
+    // Process each prompt in this category
+    for (const cleanPrompt of category.prompts) {
+      const translation = cleanPrompt[languageCode] as { prompt: string; purpose: string } | undefined;
+
+      if (!translation || typeof translation !== 'object' || !translation.prompt || !translation.purpose) {
+        // Fallback to English if requested language not available
+        const fallbackTranslation = cleanPrompt.en as { prompt: string; purpose: string } | undefined;
+        if (fallbackTranslation && typeof fallbackTranslation === 'object' && fallbackTranslation.prompt && fallbackTranslation.purpose) {
+          // eslint-disable-next-line no-console
+          console.warn(`Missing ${language} translation for prompt ${categoryId}${cleanPrompt.id}, using English fallback`);
+          prompts.push({
+            id: `${categoryId}${cleanPrompt.id}`, // Reconstruct combined ID for compatibility
+            category: categoryName,
+            prompt: fallbackTranslation.prompt.trim(),
+            purpose: fallbackTranslation.purpose.trim(),
+          });
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn(`No translation available for prompt ${categoryId}${cleanPrompt.id}, skipping`);
+        }
+        continue;
+      }
+
+      prompts.push({
+        id: `${categoryId}${cleanPrompt.id}`, // Reconstruct combined ID for compatibility
+        category: categoryName,
+        prompt: translation.prompt.trim(),
+        purpose: translation.purpose.trim(),
+      });
+    }
+  }
+
+  // Group prompts by category
+  const grouped: CategoryGroup = {};
+  prompts.forEach(prompt => {
+    if (!grouped[prompt.category]) {
+      grouped[prompt.category] = [];
+    }
+    grouped[prompt.category].push(prompt);
+  });
+
+  return grouped;
+}
+
+async function loadPromptsFromNestedStructure(yamlText: string, language: string): Promise<CategoryGroup> {
   const data = yaml.load(yamlText) as PromptsData;
 
   if (!data || !data.prompts || !Array.isArray(data.prompts) || !data.categories || !Array.isArray(data.categories)) {
-    throw new Error('Invalid prompts data structure - missing prompts or categories');
+    throw new Error('Invalid nested prompts data structure - missing prompts or categories');
   }
 
   const prompts: Prompt[] = [];
