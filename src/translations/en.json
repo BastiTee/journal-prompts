@@ -7,24 +7,24 @@
     "placeholder": "Select a category..."
   },
   "buttons": {
-    "showPurpose": "Show the purpose of this exercise",
-    "hidePurpose": "Hide the purpose of this exercise",
-    "newPrompt": "Get a new prompt",
-    "newPromptFromAnyCategory": "Get a new prompt from any category",
-    "copyLink": "Copy link to this prompt",
-    "switchToEnglish": "Switch to English",
-    "switchToGerman": "Switch to German",
-    "switchToLight": "Switch to light mode",
-    "switchToDark": "Switch to dark mode",
-    "pinCategory": "Pin this category",
-    "unpinCategory": "Unpin category (get prompts from all categories)"
+    "showPurpose": "Show the purpose of this question.",
+    "hidePurpose": "Hide the purpose of this question.",
+    "newPrompt": "Get a new question.",
+    "newPromptFromAnyCategory": "Get a new question from any category.",
+    "copyLink": "Copy link to this question.",
+    "switchToEnglish": "Switch to English.",
+    "switchToGerman": "Switch to German.",
+    "switchToLight": "Switch to light mode.",
+    "switchToDark": "Switch to dark mode.",
+    "pinCategory": "Pin this category.",
+    "unpinCategory": "Unpin category (get questions from all categories)."
   },
   "messages": {
-    "loadError": "Failed to load journal prompts. Please refresh the page.",
-    "errorTitle": "Error",
+    "loadError": "Failed to load journal questions. Please refresh the page.",
+    "errorTitle": "Error!",
     "copied": "Copied!",
-    "linkSaved": "Link saved to clipboard",
-    "categoryPinned": "Category pinned",
-    "categoryUnpinned": "Category unpinned"
+    "linkSaved": "Link saved to clipboard.",
+    "categoryPinned": "Category pinned.",
+    "categoryUnpinned": "Category unpinned."
   }
 }

@@ -7,24 +7,24 @@
     "placeholder": "Kategorie auswählen..."
   },
   "buttons": {
-    "showPurpose": "Zweck dieser Übung anzeigen",
-    "hidePurpose": "Zweck dieser Übung verbergen",
-    "newPrompt": "Neue Fragen aussuchen",
-    "newPromptFromAnyCategory": "Neue Frage aus beliebiger Kategorie",
-    "copyLink": "Link zu dieser Frage kopieren",
-    "switchToEnglish": "Zu Englisch wechseln",
-    "switchToGerman": "Zu Deutsch wechseln",
-    "switchToLight": "Zu hellem Modus wechseln",
-    "switchToDark": "Zu dunklem Modus wechseln",
-    "pinCategory": "Diese Kategorie anheften",
-    "unpinCategory": "Kategorie lösen (Fragen aus allen Kategorien)"
+    "showPurpose": "Zweck dieser Frage anzeigen.",
+    "hidePurpose": "Zweck dieser Frage verbergen.",
+    "newPrompt": "Neue Fragen aussuchen.",
+    "newPromptFromAnyCategory": "Neue Frage aus beliebiger Kategorie.",
+    "copyLink": "Link zu dieser Frage kopieren.",
+    "switchToEnglish": "Zu Englisch wechseln.",
+    "switchToGerman": "Zu Deutsch wechseln.",
+    "switchToLight": "Zu hellem Modus wechseln.",
+    "switchToDark": "Zu dunklem Modus wechseln.",
+    "pinCategory": "Diese Kategorie anheften.",
+    "unpinCategory": "Kategorie lösen (Fragen aus allen Kategorien)."
   },
   "messages": {
     "loadError": "Fehler beim Laden der Journal-Fragen. Bitte Seite neu laden.",
-    "errorTitle": "Fehler",
+    "errorTitle": "Fehler!",
     "copied": "Kopiert!",
-    "linkSaved": "Link in Zwischenablage gespeichert",
-    "categoryPinned": "Kategorie angeheftet",
-    "categoryUnpinned": "Kategorie gelöst"
+    "linkSaved": "Link in Zwischenablage gespeichert.",
+    "categoryPinned": "Kategorie angeheftet.",
+    "categoryUnpinned": "Kategorie gelöst."
   }
 }
