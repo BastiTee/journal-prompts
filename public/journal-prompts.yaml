@@ -1,5 +1,5 @@
 categories:
-  B:
+  BIO:
     en: Biography
     de: Biografie
     prompts:
@@ -38,7 +38,7 @@ categories:
         de:
           prompt: Schreibe den letzten Traum auf, an den du dich erinnerst (auch wenn er verschwommen ist).
           purpose: Erlebe deine eigenen Erinnerungen neu.
-  CA:
+  CHA:
     en: Changing Inner Attitude
     de: Innere Einstellung ändern
     prompts:
@@ -92,7 +92,7 @@ categories:
         de:
           prompt: Wann fühlst du dich am kreativsten? Wie kannst du mehr Raum dafür in deinem Leben schaffen?
           purpose: Ermutigt zur Erkundung von Bedingungen, die Inspiration und Flow fördern.
-  CM:
+  CHM:
     en: Changing Mood
     de: Stimmung ändern
     prompts:
@@ -142,7 +142,7 @@ categories:
         de:
           prompt: Nenne ein Buch, das dich verändert hat, aber beschreibe es in einem Satz.
           purpose: Wechsle in einen kreativen, entspannten Modus.
-  DR:
+  DYR:
     en: Daily Reflection
     de: Tägliche Reflexion
     prompts:
@@ -174,7 +174,7 @@ categories:
         de:
           prompt: Was hat dich heute begeistert?
           purpose: Decke Tendenzen und innere Einstellungen auf. Verarbeite und kategorisiere Erfahrungen.
-  G:
+  GRT:
     en: Gratitude
     de: Dankbarkeit
     prompts:
@@ -222,7 +222,7 @@ categories:
         de:
           prompt: Stelle dir vor, du bist fünf Jahre in der Zukunft. Wofür würdest du deinem heutigen Ich danken, was es heute getan hat?
           purpose: Ermutigt zu bewusster Entscheidungsfindung und langfristiger Zukunftsplanung.
-  MP:
+  MOP:
     en: Morning Pages
     de: Morgenseiten
     prompts:
@@ -249,7 +249,7 @@ categories:
         de:
           prompt: Was würde diesen Tag großartig machen?
           purpose: Entfessle deine Kreativität und gewinne Klarheit für deinen Tag.
-  PD:
+  PDV:
     en: Personal Development
     de: Persönlichkeitsentwicklung
     prompts:
