@@ -12,15 +12,22 @@ interface Translations {
     showPurpose: string;
     hidePurpose: string;
     newPrompt: string;
+    newPromptFromAnyCategory: string;
     copyLink: string;
-    goBack: string;
     switchToEnglish: string;
     switchToGerman: string;
+    switchToLight: string;
+    switchToDark: string;
+    pinCategory: string;
+    unpinCategory: string;
   };
   messages: {
     loadError: string;
     errorTitle: string;
     copied: string;
+    linkSaved: string;
+    categoryPinned: string;
+    categoryUnpinned: string;
   };
 }
 

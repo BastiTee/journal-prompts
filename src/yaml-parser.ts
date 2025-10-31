@@ -1,6 +1,6 @@
 import * as yaml from 'js-yaml';
 import { marked } from 'marked';
-import { Prompt, CategoryGroup } from './types.ts';
+import { Prompt, CategoryGroup, PromptsData } from './types.ts';
 
 // Configure marked for safe HTML rendering
 marked.setOptions({
@@ -10,39 +10,110 @@ marked.setOptions({
 
 export async function loadPrompts(language: string = 'EN'): Promise<CategoryGroup> {
   try {
-    const response = await fetch(`./prompts_${language}.yaml`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch prompts: ${response.statusText}`);
+    // Try to load from new unified file first
+    try {
+      return await loadPromptsFromUnified(language);
+    } catch (unifiedError) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to load from unified file, trying legacy format:', unifiedError);
+
+      // Fallback to legacy format for backward compatibility
+      return await loadPromptsLegacy(language);
     }
-
-    const yamlText = await response.text();
-    const documents = yamlText.split('---').filter(doc => doc.trim());
-
-    const prompts: Prompt[] = documents.map(doc => {
-      const parsed = yaml.load(doc.trim()) as Prompt;
-      return {
-        id: parsed.id,
-        category: parsed.category,
-        prompt: parsed.prompt.trim(),
-        purpose: parsed.purpose.trim(),
-      };
-    });
-
-    // Group prompts by category
-    const grouped: CategoryGroup = {};
-    prompts.forEach(prompt => {
-      if (!grouped[prompt.category]) {
-        grouped[prompt.category] = [];
-      }
-      grouped[prompt.category].push(prompt);
-    });
-
-    return grouped;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error loading prompts:', error);
     throw error;
   }
+}
+
+async function loadPromptsFromUnified(language: string): Promise<CategoryGroup> {
+  const response = await fetch('./journal-prompts.yaml');
+  if (!response.ok) {
+    throw new Error(`Failed to fetch unified prompts: ${response.statusText}`);
+  }
+
+  const yamlText = await response.text();
+  const data = yaml.load(yamlText) as PromptsData;
+
+  if (!data || !data.prompts || !Array.isArray(data.prompts)) {
+    throw new Error('Invalid prompts data structure');
+  }
+
+  const prompts: Prompt[] = [];
+  const languageCode = language.toLowerCase();
+
+  for (const multiPrompt of data.prompts) {
+    const translation = multiPrompt.translations[languageCode];
+
+    if (!translation) {
+      // Fallback to English if requested language not available
+      const fallbackTranslation = multiPrompt.translations.en;
+      if (fallbackTranslation) {
+        // eslint-disable-next-line no-console
+        console.warn(`Missing ${language} translation for prompt ${multiPrompt.id}, using English fallback`);
+        prompts.push({
+          id: multiPrompt.id,
+          category: multiPrompt.category,
+          prompt: fallbackTranslation.prompt.trim(),
+          purpose: fallbackTranslation.purpose.trim(),
+        });
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn(`No translation available for prompt ${multiPrompt.id}, skipping`);
+      }
+      continue;
+    }
+
+    prompts.push({
+      id: multiPrompt.id,
+      category: multiPrompt.category,
+      prompt: translation.prompt.trim(),
+      purpose: translation.purpose.trim(),
+    });
+  }
+
+  // Group prompts by category
+  const grouped: CategoryGroup = {};
+  prompts.forEach(prompt => {
+    if (!grouped[prompt.category]) {
+      grouped[prompt.category] = [];
+    }
+    grouped[prompt.category].push(prompt);
+  });
+
+  return grouped;
+}
+
+async function loadPromptsLegacy(language: string): Promise<CategoryGroup> {
+  const response = await fetch(`./prompts_${language}.yaml`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch legacy prompts: ${response.statusText}`);
+  }
+
+  const yamlText = await response.text();
+  const documents = yamlText.split('---').filter(doc => doc.trim());
+
+  const prompts: Prompt[] = documents.map(doc => {
+    const parsed = yaml.load(doc.trim()) as Prompt;
+    return {
+      id: parsed.id,
+      category: parsed.category,
+      prompt: parsed.prompt.trim(),
+      purpose: parsed.purpose.trim(),
+    };
+  });
+
+  // Group prompts by category
+  const grouped: CategoryGroup = {};
+  prompts.forEach(prompt => {
+    if (!grouped[prompt.category]) {
+      grouped[prompt.category] = [];
+    }
+    grouped[prompt.category].push(prompt);
+  });
+
+  return grouped;
 }
 
 export function getRandomPrompt(prompts: Prompt[]): Prompt {
