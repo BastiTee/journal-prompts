@@ -451,9 +451,8 @@ class JournalPromptsApp {
   }
 
   private togglePin(): void {
-    const wasPinned = this.isPinned;
     this.setPinned(!this.isPinned);
-    
+
     // Show appropriate status message
     if (this.isPinned) {
       this.showStatus(TranslationManager.get('messages.categoryPinned'));
