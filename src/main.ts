@@ -417,6 +417,10 @@ class JournalPromptsApp {
   }
 
   private selectNewPrompt(): void {
+    // When clicking reload button, reset deep link state and clean URL
+    this.wasOpenedWithDeepLink = false;
+    this.clearUrl();
+
     if (this.isPinned && this.currentCategory) {
       // Get new prompt from current category only
       const prompts = this.categoryGroups[this.currentCategory];
@@ -512,6 +516,12 @@ class JournalPromptsApp {
 
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
+  }
+
+  private clearUrl(): void {
+    // Clear URL parameters, keeping only the pathname
+    const cleanUrl = window.location.pathname;
+    window.history.pushState({}, '', cleanUrl);
   }
 
   private handleDeepLink(): boolean {
