@@ -48,3 +48,4 @@ npm run type-check
 ## License
 
 This project is open source and available under the MIT License.
+[Diary icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/diary).
