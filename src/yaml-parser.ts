@@ -1,6 +1,6 @@
 import * as yaml from 'js-yaml';
 import { marked } from 'marked';
-import { Prompt, CategoryGroup, PromptsData, Category, CleanPromptsData } from './types.ts';
+import { Prompt, CategoryGroup, CleanPromptsData, PromptsData, Category } from './types.ts';
 
 // Configure marked for safe HTML rendering
 marked.setOptions({
@@ -37,17 +37,17 @@ async function loadPromptsFromUnified(language: string): Promise<CategoryGroup> 
 
   // Try to load as clean structure first
   try {
-    return await loadPromptsFromCleanStructure(yamlText, language);
+    return loadPromptsFromCleanStructure(yamlText, language);
   } catch (cleanError) {
     // eslint-disable-next-line no-console
     console.warn('Failed to load clean structure, trying nested format:', cleanError);
 
     // Fallback to nested structure
-    return await loadPromptsFromNestedStructure(yamlText, language);
+    return loadPromptsFromNestedStructure(yamlText, language);
   }
 }
 
-async function loadPromptsFromCleanStructure(yamlText: string, language: string): Promise<CategoryGroup> {
+function loadPromptsFromCleanStructure(yamlText: string, language: string): CategoryGroup {
   const data = yaml.load(yamlText) as CleanPromptsData;
 
   if (!data || !data.categories || typeof data.categories !== 'object') {
@@ -112,7 +112,7 @@ async function loadPromptsFromCleanStructure(yamlText: string, language: string)
   return grouped;
 }
 
-async function loadPromptsFromNestedStructure(yamlText: string, language: string): Promise<CategoryGroup> {
+function loadPromptsFromNestedStructure(yamlText: string, language: string): CategoryGroup {
   const data = yaml.load(yamlText) as PromptsData;
 
   if (!data || !data.prompts || !Array.isArray(data.prompts) || !data.categories || !Array.isArray(data.categories)) {

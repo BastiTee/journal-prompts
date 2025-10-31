@@ -29,8 +29,9 @@ export function createIcon(iconName: keyof typeof iconSvgs, className = 'btn-ico
 // Helper function to replace an existing icon
 export function replaceIcon(element: Element, iconName: keyof typeof iconSvgs): void {
   const existingSvg = element.querySelector('svg');
-  if (existingSvg) {
-    const newIcon = createIcon(iconName, existingSvg.className.baseVal || 'btn-icon');
+  if (existingSvg && existingSvg instanceof SVGElement) {
+    const svgClass = existingSvg.getAttribute('class') || 'btn-icon';
+    const newIcon = createIcon(iconName, svgClass);
     existingSvg.replaceWith(newIcon);
   }
 }

@@ -24,20 +24,8 @@ export default tseslint.config(
       // General code quality rules
       'no-console': 'warn',
       'no-debugger': 'error',
-      'no-duplicate-imports': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
-
-      // Code style rules
-      'indent': ['error', 2],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
-      'comma-dangle': ['error', 'always-multiline'],
-      'object-curly-spacing': ['error', 'always'],
-      'array-bracket-spacing': ['error', 'never'],
-      'space-before-function-paren': ['error', { 'anonymous': 'always', 'named': 'never', 'asyncArrow': 'always' }],
-      'no-trailing-spaces': 'error',
-      'eol-last': 'error',
     },
   },
   {

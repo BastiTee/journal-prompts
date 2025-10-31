@@ -40,13 +40,13 @@ class TranslationManager {
     
     if (!this.translations.has(language)) {
       try {
-        const translationModule = await import(`./translations/${language.toLowerCase()}.json`);
+        const translationModule = await import(`./translations/${language.toLowerCase()}.json`) as { default: Translations };
         this.translations.set(language, translationModule.default);
       } catch (error) {
         console.warn(`Failed to load translations for language: ${language}`, error);
         // Fallback to English if available
         if (language !== 'EN' && !this.translations.has('EN')) {
-          const fallbackModule = await import('./translations/en.json');
+          const fallbackModule = await import('./translations/en.json') as { default: Translations };
           this.translations.set('EN', fallbackModule.default);
           this.currentLanguage = 'EN';
         }
@@ -69,11 +69,11 @@ class TranslationManager {
 
     // Navigate through nested object using dot notation
     const keys = key.split('.');
-    let value: any = translations;
-    
+    let value: unknown = translations;
+
     for (const k of keys) {
-      if (value && typeof value === 'object' && k in value) {
-        value = value[k];
+      if (value && typeof value === 'object' && value !== null && k in value) {
+        value = (value as Record<string, unknown>)[k];
       } else {
         console.warn(`Translation key not found: ${key} for language: ${this.currentLanguage}`);
         return key;

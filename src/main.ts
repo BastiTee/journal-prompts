@@ -2,88 +2,25 @@ import { loadPrompts, getRandomPrompt, parseMarkdown, findPromptById } from './y
 import { CategoryGroup, Prompt } from './types.ts';
 import { TranslationManager } from './translations.ts';
 import { replaceIcon } from './icons.ts';
+import { forceSafariCenteringRefresh, getElementById, querySelector } from './utils.ts';
+import { SettingsManager } from './settings.ts';
+import {
+  TIMING,
+  SELECTORS,
+  ELEMENT_IDS,
+  CSS_CLASSES,
+  type Language,
+  type Theme
+} from './constants.ts';
 import './styles.css';
 
-class LanguageManager {
-  private static readonly STORAGE_KEY = 'journal-prompts-language';
-  private static readonly DEFAULT_LANGUAGE = 'EN';
-  private static readonly AVAILABLE_LANGUAGES = ['EN', 'DE'];
-
-  static getCurrentLanguage(): string {
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      if (stored && this.AVAILABLE_LANGUAGES.includes(stored)) {
-        return stored;
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Failed to read language from localStorage:', error);
-    }
-    return this.DEFAULT_LANGUAGE;
-  }
-
-  static setLanguage(language: string): void {
-    if (!this.AVAILABLE_LANGUAGES.includes(language)) {
-      throw new Error(`Unsupported language: ${language}`);
-    }
-    
-    try {
-      localStorage.setItem(this.STORAGE_KEY, language);
-      // Update HTML lang attribute for accessibility
-      document.documentElement.lang = language.toLowerCase();
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Failed to save language to localStorage:', error);
-    }
-  }
-
-}
-
-class ThemeManager {
-  private static readonly STORAGE_KEY = 'journal-prompts-theme';
-  private static readonly DEFAULT_THEME = 'light';
-  private static readonly AVAILABLE_THEMES = ['light', 'dark'];
-
-  static getCurrentTheme(): string {
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      if (stored && this.AVAILABLE_THEMES.includes(stored)) {
-        return stored;
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Failed to read theme from localStorage:', error);
-    }
-    return this.DEFAULT_THEME;
-  }
-
-  static setTheme(theme: string): void {
-    if (!this.AVAILABLE_THEMES.includes(theme)) {
-      throw new Error(`Unsupported theme: ${theme}`);
-    }
-    
-    try {
-      localStorage.setItem(this.STORAGE_KEY, theme);
-      // Update HTML data-theme attribute
-      if (theme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Failed to save theme to localStorage:', error);
-    }
-  }
-
-}
 
 class JournalPromptsApp {
   private categoryGroups: CategoryGroup = {};
   private currentCategory: string = '';
   private currentPrompt: Prompt | null = null;
-  private currentLanguage: string = '';
-  private currentTheme: string = '';
+  private currentLanguage: Language = 'EN';
+  private currentTheme: Theme = 'light';
   private isPinned: boolean = false;
   private promptDisplayEl!: HTMLElement;
   private categorySelectEl!: HTMLSelectElement;
@@ -106,76 +43,26 @@ class JournalPromptsApp {
   constructor() {
     try {
       // Get main elements
-      this.promptDisplayEl = document.getElementById('prompt-display')!;
-      this.categorySelectEl = document.getElementById('category-select')! as HTMLSelectElement;
-      this.languageSwitcherEl = document.getElementById('language-switcher')!;
-      this.themeSwitcherEl = document.getElementById('theme-switcher')!;
-      this.statusNotificationEl = document.getElementById('status-notification')!;
-      this.statusMessageEl = document.querySelector('.status-message')!;
-
-      // Verify main elements exist
-      if (!this.promptDisplayEl) {
-        throw new Error('Prompt display element not found');
-      }
-      if (!this.categorySelectEl) {
-        throw new Error('Category select element not found');
-      }
-      if (!this.languageSwitcherEl) {
-        throw new Error('Language switcher element not found');
-      }
-      if (!this.themeSwitcherEl) {
-        throw new Error('Theme switcher element not found');
-      }
-      if (!this.statusNotificationEl) {
-        throw new Error('Status notification element not found');
-      }
-      if (!this.statusMessageEl) {
-        throw new Error('Status message element not found');
-      }
+      this.promptDisplayEl = getElementById(ELEMENT_IDS.PROMPT_DISPLAY, 'Prompt display');
+      this.categorySelectEl = getElementById<HTMLSelectElement>(ELEMENT_IDS.CATEGORY_SELECT, 'Category select');
+      this.languageSwitcherEl = getElementById(ELEMENT_IDS.LANGUAGE_SWITCHER, 'Language switcher');
+      this.themeSwitcherEl = getElementById(ELEMENT_IDS.THEME_SWITCHER, 'Theme switcher');
+      this.statusNotificationEl = getElementById(ELEMENT_IDS.STATUS_NOTIFICATION, 'Status notification');
+      this.statusMessageEl = querySelector(SELECTORS.STATUS_MESSAGE, 'Status message');
 
       // Get prompt elements
-      this.promptTextEl = document.querySelector('.prompt-text')!;
-      this.promptPurposeEl = document.querySelector('.prompt-purpose')!;
-
-      // Verify prompt elements exist
-      if (!this.promptTextEl) {
-        throw new Error('Prompt text element not found');
-      }
-      if (!this.promptPurposeEl) {
-        throw new Error('Prompt purpose element not found');
-      }
+      this.promptTextEl = querySelector(SELECTORS.PROMPT_TEXT, 'Prompt text');
+      this.promptPurposeEl = querySelector(SELECTORS.PROMPT_PURPOSE, 'Prompt purpose');
 
       // Get button elements
-      this.togglePurposeBtnEl = document.getElementById('toggle-purpose-btn')!;
-      this.newPromptBtnEl = document.getElementById('new-prompt-btn')!;
-      this.copyLinkBtnEl = document.getElementById('copy-link-btn')!;
-      this.pinBtnEl = document.getElementById('pin-btn')!;
+      this.togglePurposeBtnEl = getElementById(ELEMENT_IDS.TOGGLE_PURPOSE_BTN, 'Toggle purpose button');
+      this.newPromptBtnEl = getElementById(ELEMENT_IDS.NEW_PROMPT_BTN, 'New prompt button');
+      this.copyLinkBtnEl = getElementById(ELEMENT_IDS.COPY_LINK_BTN, 'Copy link button');
+      this.pinBtnEl = getElementById(ELEMENT_IDS.PIN_BTN, 'Pin button');
 
       // Get settings elements
-      this.settingsContainerEl = document.querySelector('.settings-container')!;
-      this.settingsToggleEl = document.getElementById('settings-toggle')!;
-
-      // Verify button elements exist
-      if (!this.togglePurposeBtnEl) {
-        throw new Error('Toggle purpose button element not found');
-      }
-      if (!this.newPromptBtnEl) {
-        throw new Error('New prompt button element not found');
-      }
-      if (!this.copyLinkBtnEl) {
-        throw new Error('Copy link button element not found');
-      }
-      if (!this.pinBtnEl) {
-        throw new Error('Pin button element not found');
-      }
-
-      // Verify settings elements exist
-      if (!this.settingsContainerEl) {
-        throw new Error('Settings container element not found');
-      }
-      if (!this.settingsToggleEl) {
-        throw new Error('Settings toggle element not found');
-      }
+      this.settingsContainerEl = querySelector(SELECTORS.SETTINGS_CONTAINER, 'Settings container');
+      this.settingsToggleEl = getElementById(ELEMENT_IDS.SETTINGS_TOGGLE, 'Settings toggle');
 
       // Replace all icons with Lucide icons
       this.replaceAllIcons();
@@ -184,7 +71,7 @@ class JournalPromptsApp {
     } catch (error) {
       console.error('Constructor error:', error);
       // Show fallback error message since translations might not be initialized yet
-      document.body.innerHTML = `<div class="error"><h1>Error</h1><p>Failed to initialize app: ${error}</p></div>`;
+      document.body.innerHTML = `<div class="error"><h1>Error</h1><p>Failed to initialize app: ${String(error)}</p></div>`;
     }
   }
 
@@ -250,13 +137,13 @@ class JournalPromptsApp {
   }
 
   private initializeLanguage(): void {
-    this.currentLanguage = LanguageManager.getCurrentLanguage();
+    this.currentLanguage = SettingsManager.getCurrentLanguage();
     document.documentElement.lang = this.currentLanguage.toLowerCase();
   }
 
   private initializeTheme(): void {
-    this.currentTheme = ThemeManager.getCurrentTheme();
-    ThemeManager.setTheme(this.currentTheme);
+    this.currentTheme = SettingsManager.getCurrentTheme();
+    SettingsManager.setTheme(this.currentTheme);
   }
 
   private async initializeTranslations(): Promise<void> {
@@ -352,39 +239,9 @@ class JournalPromptsApp {
     });
 
     // Force Safari iOS to re-apply text centering after populating options
-    this.forceSafariCenteringRefresh();
+    forceSafariCenteringRefresh(this.categorySelectEl);
   }
 
-  private forceSafariCenteringRefresh(): void {
-    // Force Safari iOS to re-apply text centering by temporarily changing and restoring styles
-    // This works around Safari's issue where it doesn't re-apply text centering after DOM changes
-    const originalDisplay = this.categorySelectEl.style.display;
-    this.categorySelectEl.style.display = 'none';
-    
-    // Force a reflow
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    this.categorySelectEl.offsetHeight;
-    
-    // Restore display and trigger another reflow
-    this.categorySelectEl.style.display = originalDisplay;
-    
-    // Additional Safari iOS specific fix: temporarily change text-align
-    const originalTextAlign = this.categorySelectEl.style.textAlign;
-    this.categorySelectEl.style.textAlign = 'left';
-    
-    // Force another reflow
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    this.categorySelectEl.offsetHeight;
-    
-    // Restore text-align to center (or remove to use CSS)
-    this.categorySelectEl.style.textAlign = originalTextAlign || '';
-    
-    // Final reflow to ensure changes are applied
-    setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      this.categorySelectEl.offsetHeight;
-    }, 0);
-  }
 
   private onCategoryChange(): void {
     const selectedCategory = this.categorySelectEl.value;
@@ -443,9 +300,9 @@ class JournalPromptsApp {
   private setPinned(pinned: boolean): void {
     this.isPinned = pinned;
     if (pinned) {
-      this.pinBtnEl.classList.add('pinned');
+      this.pinBtnEl.classList.add(CSS_CLASSES.PINNED);
     } else {
-      this.pinBtnEl.classList.remove('pinned');
+      this.pinBtnEl.classList.remove(CSS_CLASSES.PINNED);
     }
     this.updateButtonTooltips();
   }
@@ -469,7 +326,7 @@ class JournalPromptsApp {
 
     // Reset purpose visibility
     this.purposeVisible = false;
-    this.promptPurposeEl.classList.add('hidden');
+    this.promptPurposeEl.classList.add(CSS_CLASSES.HIDDEN);
     this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
 
     // Update current category but don't auto-pin unless user selected it
@@ -498,12 +355,12 @@ class JournalPromptsApp {
     this.purposeVisible = !this.purposeVisible;
 
     if (this.purposeVisible) {
-      this.promptPurposeEl.classList.remove('hidden');
-      this.togglePurposeBtnEl.classList.add('active');
+      this.promptPurposeEl.classList.remove(CSS_CLASSES.HIDDEN);
+      this.togglePurposeBtnEl.classList.add(CSS_CLASSES.ACTIVE);
       this.togglePurposeBtnEl.title = TranslationManager.get('buttons.hidePurpose');
     } else {
-      this.promptPurposeEl.classList.add('hidden');
-      this.togglePurposeBtnEl.classList.remove('active');
+      this.promptPurposeEl.classList.add(CSS_CLASSES.HIDDEN);
+      this.togglePurposeBtnEl.classList.remove(CSS_CLASSES.ACTIVE);
       this.togglePurposeBtnEl.title = TranslationManager.get('buttons.showPurpose');
     }
   }
@@ -606,10 +463,10 @@ class JournalPromptsApp {
       this.showStatus(TranslationManager.get('messages.linkSaved'));
 
       // Show temporary visual feedback on button
-      this.copyLinkBtnEl.classList.add('copied');
+      this.copyLinkBtnEl.classList.add(CSS_CLASSES.COPIED);
       setTimeout(() => {
-        this.copyLinkBtnEl.classList.remove('copied');
-      }, 1000);
+        this.copyLinkBtnEl.classList.remove(CSS_CLASSES.COPIED);
+      }, TIMING.COPY_FEEDBACK_DURATION);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to copy link:', error);
@@ -637,10 +494,10 @@ class JournalPromptsApp {
       this.showStatus(TranslationManager.get('messages.linkSaved'));
 
       // Show temporary visual feedback on button
-      this.copyLinkBtnEl.classList.add('copied');
+      this.copyLinkBtnEl.classList.add(CSS_CLASSES.COPIED);
       setTimeout(() => {
-        this.copyLinkBtnEl.classList.remove('copied');
-      }, 1000);
+        this.copyLinkBtnEl.classList.remove(CSS_CLASSES.COPIED);
+      }, TIMING.COPY_FEEDBACK_DURATION);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Fallback copy failed:', error);
@@ -659,7 +516,7 @@ class JournalPromptsApp {
       button.addEventListener('click', (e) => {
         const target = e.target as HTMLButtonElement;
         const language = target.dataset.lang;
-        if (language && language !== this.currentLanguage) {
+        if (language && language !== this.currentLanguage && SettingsManager.isLanguageSupported(language)) {
           void this.switchLanguage(language);
         }
       });
@@ -679,10 +536,10 @@ class JournalPromptsApp {
     });
   }
 
-  private async switchLanguage(newLanguage: string): Promise<void> {
+  private async switchLanguage(newLanguage: Language): Promise<void> {
     try {
       // Save language preference
-      LanguageManager.setLanguage(newLanguage);
+      SettingsManager.setLanguage(newLanguage);
       this.currentLanguage = newLanguage;
 
       // Store current state
@@ -742,7 +599,7 @@ class JournalPromptsApp {
       button.addEventListener('click', (e) => {
         const target = e.target as HTMLButtonElement;
         const theme = target.dataset.theme;
-        if (theme && theme !== this.currentTheme) {
+        if (theme && theme !== this.currentTheme && SettingsManager.isThemeSupported(theme)) {
           this.switchTheme(theme);
         }
       });
@@ -774,10 +631,10 @@ class JournalPromptsApp {
     }
   }
 
-  private switchTheme(newTheme: string): void {
+  private switchTheme(newTheme: Theme): void {
     try {
       // Save theme preference
-      ThemeManager.setTheme(newTheme);
+      SettingsManager.setTheme(newTheme);
       this.currentTheme = newTheme;
 
       // Update theme button states
