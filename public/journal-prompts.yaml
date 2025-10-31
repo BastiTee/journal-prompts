@@ -256,8 +256,9 @@ categories:
       - id: 1
         en:
           prompt: |-
-            How would the following characters each react to one of your goals or wishes?
-            Someone who seeks...
+            Write down a goal.
+
+            How would the following characters each react to it? Someone who seeks...
 
             * security and stability
 
@@ -275,8 +276,7 @@ categories:
           prompt: |-
             Schreibe ein Ziel auf.
 
-            Wie würde jeder der folgenden Charaktere auf eines deiner Ziele oder Wünsche reagieren?
-            Jemand, mit einer Vorliebe/einem Hang für...
+            Wie würde jeder der folgenden Charaktere darauf reagieren? Jemand, mit einer Vorliebe/einem Hang für...
 
             * Sicherheit und Stabilität
 
