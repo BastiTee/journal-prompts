@@ -66,6 +66,27 @@
         }
       })();
     </script>
+
+    <!-- Critical FOUC prevention CSS - must load immediately with HTML -->
+    <style>
+      body.loading {
+        visibility: hidden;
+      }
+      body.loading::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        visibility: visible;
+        background: #f7f3e9;
+      }
+      body.loading[data-theme="dark"]::before {
+        background: #1c1a18;
+      }
+    </style>
   </head>
   <body class="loading">
     <!-- Status notification container -->

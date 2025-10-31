@@ -1,24 +1,4 @@
-/* Anti-FOUC loading styles - must be first */
-body.loading {
-  visibility: hidden;
-}
-
-body.loading::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #f7f3e9; /* Light theme background */
-  z-index: 9999;
-  visibility: visible;
-}
-
-/* Dark theme loading background */
-body.loading[data-theme="dark"]::before {
-  background: #1c1a18; /* Dark theme background */
-}
+/* Note: Critical FOUC prevention CSS is now inline in HTML head for immediate loading */
 
 /* CSS Custom Properties for theming */
 :root {
@@ -823,6 +803,11 @@ main {
 .settings-container.settings-hidden .theme-switcher,
 .settings-container.settings-hidden .language-switcher {
   display: none;
+}
+
+/* After app loads, ensure settings container is visible but controls are hidden by default */
+body:not(.loading) .settings-container {
+  display: flex;
 }
 
 /* Settings Toggle Button - Minimal Style */
