@@ -236,10 +236,15 @@ class JournalPromptsApp {
         // eslint-disable-next-line no-console
         console.warn('No prompts loaded, cannot initialize app');
       }
+      
+      // Remove loading class to show the app gracefully
+      this.finishLoading();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to initialize app:', error);
       this.showError(TranslationManager.get('messages.loadError'));
+      // Still remove loading class even on error
+      this.finishLoading();
     }
   }
 
@@ -808,6 +813,11 @@ class JournalPromptsApp {
         <p>${message}</p>
       </div>
     `;
+  }
+
+  private finishLoading(): void {
+    // Remove loading class to show the app gracefully
+    document.body.classList.remove('loading');
   }
 }
 

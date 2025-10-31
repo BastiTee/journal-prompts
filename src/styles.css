@@ -1,3 +1,25 @@
+/* Anti-FOUC loading styles - must be first */
+body.loading {
+  visibility: hidden;
+}
+
+body.loading::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f7f3e9; /* Light theme background */
+  z-index: 9999;
+  visibility: visible;
+}
+
+/* Dark theme loading background */
+body.loading[data-theme="dark"]::before {
+  background: #1c1a18; /* Dark theme background */
+}
+
 /* CSS Custom Properties for theming */
 :root {
   /* Light theme colors */

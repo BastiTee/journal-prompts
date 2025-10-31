@@ -52,8 +52,22 @@
     <meta property="twitter:title" content="Journal Prompts">
     <meta property="twitter:description" content="Get your pen and paper and start journaling with thoughtful prompts">
     <meta property="twitter:image" content="/favicon.png">
+    
+    <!-- Anti-FOUC script - detect and apply theme immediately -->
+    <script>
+      (function() {
+        try {
+          const storedTheme = localStorage.getItem('journal-prompts-theme');
+          if (storedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        } catch (error) {
+          // Ignore localStorage errors
+        }
+      })();
+    </script>
   </head>
-  <body>
+  <body class="loading">
     <!-- Status notification container -->
     <div id="status-notification" class="status-notification hidden">
       <span class="status-message"></span>
