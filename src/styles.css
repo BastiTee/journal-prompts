@@ -786,23 +786,30 @@ main {
 /* Hide settings controls by default - prevents FOUC */
 .settings-container .theme-switcher,
 .settings-container .language-switcher {
-  display: none;
+  display: flex; /* Always maintain layout space */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
 /* Show settings controls only when they should be visible */
 .settings-container.settings-visible .theme-switcher,
 .settings-container.settings-visible .language-switcher {
-  display: flex;
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
-  transition: all 0.3s ease;
 }
 
 /* Keep settings hidden when explicitly hidden */
 .settings-container.settings-hidden .theme-switcher,
 .settings-container.settings-hidden .language-switcher {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 
 /* After app loads, ensure settings container is visible but controls are hidden by default */
