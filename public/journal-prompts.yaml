@@ -174,6 +174,34 @@ categories:
         de:
           prompt: Was hat dich heute begeistert?
           purpose: Decke Tendenzen und innere Einstellungen auf. Verarbeite und kategorisiere Erfahrungen.
+      - id: 5
+        en:
+          prompt: What was a moment today where you were fully present?
+          purpose: Notice the quality of your attention and where you find flow or stillness.
+        de:
+          prompt: Was war ein Moment heute, in dem du vollständig präsent warst?
+          purpose: Beobachte die Qualität deiner Aufmerksamkeit und wo du Fluss oder Stille findest.
+      - id: 6
+        en:
+          prompt: What would you do differently if you could repeat today?
+          purpose: Gentle accountability — learn from the day without self-criticism.
+        de:
+          prompt: Was würdest du anders machen, wenn du den heutigen Tag wiederholen könntest?
+          purpose: Sanfte Selbstreflexion — lerne aus dem Tag ohne Selbstkritik.
+      - id: 7
+        en:
+          prompt: Who made an impact on you today, however small?
+          purpose: Shift attention toward connection and the people around you.
+        de:
+          prompt: Wer hat heute einen Eindruck auf dich gemacht, egal wie klein?
+          purpose: Lenke die Aufmerksamkeit auf Verbindungen und die Menschen um dich herum.
+      - id: 8
+        en:
+          prompt: What choice did you make today that you're proud of?
+          purpose: Reinforce personal agency and self-respect by recognizing intentional decisions.
+        de:
+          prompt: Welche Entscheidung hast du heute getroffen, auf die du stolz bist?
+          purpose: Stärke das Gefühl von Handlungsfähigkeit und Selbstrespekt durch das Erkennen bewusster Entscheidungen.
   GRT:
     en: Gratitude
     de: Dankbarkeit
@@ -249,6 +277,34 @@ categories:
         de:
           prompt: Was würde diesen Tag großartig machen?
           purpose: Entfessle deine Kreativität und gewinne Klarheit für deinen Tag.
+      - id: 4
+        en:
+          prompt: How does your body feel right now?
+          purpose: Somatic grounding — check in with physical sensations before the day begins.
+        de:
+          prompt: Wie fühlt sich dein Körper gerade an?
+          purpose: Körperliche Erdung — spüre in deine körperlichen Empfindungen, bevor der Tag beginnt.
+      - id: 5
+        en:
+          prompt: What intention do you set for today?
+          purpose: Frame the day with purpose rather than letting it happen to you.
+        de:
+          prompt: Welche Intention hat der heutige Tag für dich?
+          purpose: Gestalte den Tag bewusst, anstatt ihn einfach passieren zu lassen.
+      - id: 6
+        en:
+          prompt: What are you carrying with you from yesterday that you'd like to set down?
+          purpose: Emotional clearing — create space for a fresh start.
+        de:
+          prompt: Was trägst du von gestern mit dir, das du gerne loslassen würdest?
+          purpose: Emotionale Klärung — schaffe Raum für einen frischen Start.
+      - id: 7
+        en:
+          prompt: What would make today feel like a success by the end of it?
+          purpose: Define a concrete, personal measure of a good day before it starts.
+        de:
+          prompt: Was würde dazu beitragen, dass sich der heutige Tag am Ende wie ein Erfolg anfühlt?
+          purpose: Lege ein konkretes, persönliches Maß für einen guten Tag fest, bevor er beginnt.
   PDV:
     en: Personal Development
     de: Persönlichkeitsentwicklung
@@ -389,3 +445,42 @@ categories:
         de:
           prompt: Wenn du dein Leben der Lösung eines Problems widmen könntest, welches wäre es und warum?
           purpose: Klärt Werte und Sinn für eine Mission durch Verbindung zu einem größeren Zweck.
+  BWL:
+    en: Body & Wellbeing
+    de: Körper & Wohlbefinden
+    prompts:
+      - id: 1
+        en:
+          prompt: Slowly scan your body from head to toe. What do you notice?
+          purpose: Build body awareness and notice tension, comfort, or sensation without judgment.
+        de:
+          prompt: Scanne deinen Körper langsam von Kopf bis Fuß. Was bemerkst du?
+          purpose: Fördere Körperbewusstsein und beobachte Spannungen, Wohlbefinden oder Empfindungen ohne Wertung.
+      - id: 2
+        en:
+          prompt: When did you last feel fully rested? What made that possible?
+          purpose: Identify what rest actually looks like for you personally.
+        de:
+          prompt: Wann hast du dich zuletzt vollständig ausgeruht gefühlt? Was hat das ermöglicht?
+          purpose: Erkenne, wie echte Erholung für dich persönlich aussieht.
+      - id: 3
+        en:
+          prompt: What physical sensations do you associate with feeling at peace?
+          purpose: Connect emotional states to the body — build the habit of reading physical signals.
+        de:
+          prompt: Welche körperlichen Empfindungen verbindest du mit dem Gefühl von Ruhe?
+          purpose: Verbinde emotionale Zustände mit dem Körper — baue die Gewohnheit auf, körperliche Signale zu lesen.
+      - id: 4
+        en:
+          prompt: What does your body need more of right now — sleep, movement, stillness, nourishment, or touch?
+          purpose: Practice listening to the body rather than ignoring its signals.
+        de:
+          prompt: Was braucht dein Körper gerade mehr — Schlaf, Bewegung, Stille, Nahrung oder Berührung?
+          purpose: Übe es, auf den Körper zu hören, anstatt seine Signale zu ignorieren.
+      - id: 5
+        en:
+          prompt: How have you moved your body today, and how did it feel?
+          purpose: Bring awareness to physical activity and its effect on mood and energy.
+        de:
+          prompt: Wie hast du deinen Körper heute bewegt, und wie hat es sich angefühlt?
+          purpose: Fördere Bewusstsein für körperliche Aktivität und ihre Wirkung auf Stimmung und Energie.
