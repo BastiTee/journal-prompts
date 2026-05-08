@@ -16,11 +16,12 @@ npm run lint:fix     # Auto-fix ESLint issues
 
 Vanilla TypeScript SPA built with Vite. No component framework — a single controller class (`JournalPromptsApp` in `src/main.ts`) orchestrates all UI state and interactions.
 
-**Data flow:** `public/journal-prompts.yaml` → `src/yaml-parser.ts` (parses, normalizes multi-format YAML) → `JournalPromptsApp` (selects/renders prompt) → DOM.
+**Data flow:** `public/journal-prompts.yaml` → `src/yaml-parser.ts` (parses, normalizes multi-format YAML) → `JournalPromptsApp` (selects/renders prompt) → DOM. The parser tries three formats in order: (1) current `CleanPromptsData` structure (`categories` as object keyed by ID), (2) legacy nested structure (`categories` array + `prompts` array), (3) per-language YAML files (`prompts_EN.yaml` etc.).
 
 **Key modules:**
 - `src/main.ts` — app controller; handles prompt display, category navigation, deep linking, keyboard shortcuts (R/P/L/S), theme/language switching
 - `src/yaml-parser.ts` — loads YAML, supports multiple format versions with fallback logic
+- `src/types.ts` — all data model interfaces; `CleanPromptsData`/`CleanCategory`/`CleanPrompt` are the current format; `PromptsData`/`Category`/`MultilingualPrompt` are the legacy nested format
 - `src/translations.ts` — dynamically loads `src/translations/{en,de}.json`; falls back to English
 - `src/settings.ts` — persists language and theme to `localStorage`
 - `src/constants.ts` — single source of truth for storage keys, CSS class names, element IDs, timing constants
