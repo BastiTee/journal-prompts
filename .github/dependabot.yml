@@ -13,6 +13,12 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      # typescript-eslint@8.x's peer range is ">=4.8.4 <6.1.0"; anything at or
+      # above 6.1.0 (including the 7.x line) fails npm ci with ERESOLVE.
+      # Remove once typescript-eslint widens its typescript peer range.
+      - dependency-name: "typescript"
+        versions: [">=6.1.0"]
     commit-message:
       prefix: "chore"
       include: "scope"
