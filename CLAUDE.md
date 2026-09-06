@@ -7,10 +7,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run dev          # Start dev server on port 8080
 npm run build        # Production build to dist/
+npm run preview      # Preview production build locally
 npm run type-check   # TypeScript type checking
 npm run lint         # ESLint
 npm run lint:fix     # Auto-fix ESLint issues
 ```
+
+There is no test suite/runner in this repo.
 
 ## Architecture
 
